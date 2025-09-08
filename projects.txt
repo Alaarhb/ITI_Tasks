@@ -1,0 +1,1 @@
+Health Care|AI-powered predictive system for chronic diseases (Hypertension, Stroke, Diabetes) using real healthcare data. Includes ML models, Streamlit interface.|100000.0|2025-8-20|2025-9-30|alaar@gmail.com|2025-08-19T01:05:37.891319|0.0

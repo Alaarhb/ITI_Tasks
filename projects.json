@@ -1,0 +1,12 @@
+[
+  {
+    "title": "Health Care",
+    "details": "AI-powered predictive system for chronic diseases (Hypertension, Stroke, Diabetes) using real healthcare data. Includes ML models, Streamlit interface.",
+    "total_target": 100000.0,
+    "start_date": "2025-08-17",
+    "end_date": "2025-09-30",
+    "owner_email": "alaar@gmail.com",
+    "created_at": "2025-08-16T22:18:00.256399",
+    "current_amount": 0.0
+  }
+]
