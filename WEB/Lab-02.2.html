@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+        
+        .pricing-container {
+            background-color: #4a4a4a;
+            border-radius: 10px;
+            padding: 0;
+            max-width: 700px;
+            overflow: hidden;
+        }
+        
+        .pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .header-row {
+            background-color: #4a4a4a;
+        }
+        
+        .plan-header {
+            text-align: center;
+            padding: 15px 10px;
+            color: white;
+            border-right: 2px solid #333;
+            vertical-align: middle;
+        }
+        
+        .plan-header.first {
+            background-color: #4a4a4a;
+            color: #00bcd4;
+            font-weight: bold;
+            border-right: 2px solid #333;
+        }
+        
+        .plan-header.starter { background-color: #00bcd4; }
+        .plan-header.corporate { background-color: #00bcd4; }
+        .plan-header.business { background-color: #00bcd4; }
+        .plan-header.professional { background-color: #00bcd4; }
+        
+        .price-row {
+            background-color: #2a2a2a;
+        }
+        
+        .price-cell {
+            text-align: center;
+            padding: 20px 10px;
+            color: white;
+            border-right: 2px solid #333;
+        }
+        
+        .price {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .price.starter { color: white; }
+        .price.corporate { color: #00bcd4; }
+        .price.business { color: #00bcd4; }
+        .price.professional { color: #00bcd4; }
+        
+        .per-month {
+            font-size: 12px;
+            color: #ccc;
+        }
+        
+        .feature-row {
+            background-color: #4a4a4a;
+        }
+        
+        .feature-label {
+            padding: 12px 15px;
+            color: #ccc;
+            border-right: 2px solid #333;
+            font-size: 14px;
+        }
+        
+        .feature-value {
+            text-align: center;
+            padding: 12px 10px;
+            color: white;
+            border-right: 2px solid #333;
+            font-size: 14px;
+        }
+        
+        .checkmark {
+            color: #00bcd4;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .cross {
+            color: #ff5555;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .bottom-price-row {
+            background-color: #2a2a2a;
+        }
+        
+        .bottom-price-cell {
+            text-align: center;
+            padding: 15px 10px;
+            color: white;
+            border-right: 2px solid #333;
+        }
+        
+        .bottom-price {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .bottom-price.starter { color: #00bcd4; }
+        .bottom-price.corporate { color: #00bcd4; }
+        .bottom-price.business { color: #00bcd4; }
+        .bottom-price.professional { color: #00bcd4; }
+        
+        .signup-btn {
+            background-color: #00bcd4;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        
+        .signup-btn:hover {
+            background-color: #00acc1;
+        }
+        
+        /* Remove right border from last column */
+        .pricing-table td:last-child,
+        .pricing-table th:last-child {
+            border-right: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="pricing-container">
+        <table class="pricing-table">
+            <!-- Header Row -->
+            <tr class="header-row">
+                <td class="plan-header first">chose<br>your plan</td>
+                <td class="plan-header starter">starter</td>
+                <td class="plan-header corporate">corporate</td>
+                <td class="plan-header business">business</td>
+                <td class="plan-header professional">professional</td>
+            </tr>
+            
+            <!-- Price Row -->
+            <tr class="price-row">
+                <td class="price-cell"></td>
+                <td class="price-cell">
+                    <div class="price starter">$10</div>
+                    <div class="per-month">per month</div>
+                </td>
+                <td class="price-cell">
+                    <div class="price corporate">$20</div>
+                    <div class="per-month">per month</div>
+                </td>
+                <td class="price-cell">
+                    <div class="price business">$30</div>
+                    <div class="per-month">per month</div>
+                </td>
+                <td class="price-cell">
+                    <div class="price professional">$40</div>
+                    <div class="per-month">per month</div>
+                </td>
+            </tr>
+            
+            <!-- Feature Rows -->
+            <tr class="feature-row">
+                <td class="feature-label">Amount of space</td>
+                <td class="feature-value">10GB Disk space</td>
+                <td class="feature-value">20GB Disk space</td>
+                <td class="feature-value">30GB Disk space</td>
+                <td class="feature-value">40GB Disk space</td>
+            </tr>
+            
+            <tr class="feature-row">
+                <td class="feature-label">Bandwidth per month</td>
+                <td class="feature-value">100GB Bandwidth</td>
+                <td class="feature-value">200GB Bandwidth</td>
+                <td class="feature-value">300GB Bandwidth</td>
+                <td class="feature-value">400GB Bandwidth</td>
+            </tr>
+            
+            <tr class="feature-row">
+                <td class="feature-label">MySQL Databases</td>
+                <td class="feature-value">1 Databases</td>
+                <td class="feature-value">2 Databases</td>
+                <td class="feature-value">3 Databases</td>
+                <td class="feature-value">4 Databases</td>
+            </tr>
+            
+            <tr class="feature-row">
+                <td class="feature-label">E-mail accounts</td>
+                <td class="feature-value">1 Accounts</td>
+                <td class="feature-value">2 Accounts</td>
+                <td class="feature-value">3 Accounts</td>
+                <td class="feature-value">4 Accounts</td>
+            </tr>
+            
+            <tr class="feature-row">
+                <td class="feature-label">24h support</td>
+                <td class="feature-value"><span class="checkmark">✓</span></td>
+                <td class="feature-value"><span class="checkmark">✓</span></td>
+                <td class="feature-value"><span class="checkmark">✓</span></td>
+                <td class="feature-value"><span class="checkmark">✓</span></td>
+            </tr>
+            
+            <tr class="feature-row">
+                <td class="feature-label">E-mail support</td>
+                <td class="feature-value"><span class="cross">✗</span></td>
+                <td class="feature-value"><span class="cross">✗</span></td>
+                <td class="feature-value"><span class="cross">✗</span></td>
+                <td class="feature-value"><span class="cross">✗</span></td>
+            </tr>
+            
+            <!-- Bottom Price and Signup Row -->
+            <tr class="bottom-price-row">
+                <td class="bottom-price-cell"></td>
+                <td class="bottom-price-cell">
+                    <div class="bottom-price starter">$10</div>
+                    <div class="per-month">per month</div>
+                    <button class="signup-btn">Sign up</button>
+                </td>
+                <td class="bottom-price-cell">
+                    <div class="bottom-price corporate">$20</div>
+                    <div class="per-month">per month</div>
+                    <button class="signup-btn">Sign up</button>
+                </td>
+                <td class="bottom-price-cell">
+                    <div class="bottom-price business">$30</div>
+                    <div class="per-month">per month</div>
+                    <button class="signup-btn">Sign up</button>
+                </td>
+                <td class="bottom-price-cell">
+                    <div class="bottom-price professional">$40</div>
+                    <div class="per-month">per month</div>
+                    <button class="signup-btn">Sign up</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

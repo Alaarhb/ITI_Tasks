@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array Formatting and Number Object Demo</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-family: Arial, sans-serif;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            background-color: #f0f8ff;
+        }
+        
+        .section h2 {
+            color: #2980b9;
+            margin-top: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        .code-block {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        .output {
+            background-color: #27ae60;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+        }
+        
+        .explanation {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        .highlight {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Array Formatting and Number Object Demo</h1>
+        
+        <div class="section">
+            <h2>Part 1: Array Number Formatting</h2>
+            <div class="code-block">var arr = [10.2, 20, 34, 333.12345];</div>
+            
+            <button onclick="displayArrayFormatted()">Display Array with Uniform Formatting</button>
+            <div id="arrayOutput" class="output" style="display: none;"></div>
+            
+            <div class="explanation">
+                <strong>Explanation:</strong> Using <code>toFixed(6)</code> to display all numbers with the same decimal length (6 digits after decimal point).
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Part 2: Number Object Comparison Discussion</h2>
+            
+            <h3>Statement A:</h3>
+            <div class="code-block">
+var t1 = new Number(10);<br>
+var t2 = new Number(10);<br>
+console.log(t1 == t2);
+            </div>
+            
+            <button onclick="testStatementA()">Test Statement A</button>
+            <div id="statementAOutput" class="output" style="display: none;"></div>
+            
+            <h3>Statement B:</h3>
+            <div class="code-block">console.log([1,2,3] == [1,2,3]);</div>
+            
+            <button onclick="testStatementB()">Test Statement B</button>
+            <div id="statementBOutput" class="output" style="display: none;"></div>
+            
+            <div class="explanation">
+                <h4>Discussion Results:</h4>
+                <p><strong>Statement A Result:</strong> <span class="highlight">false</span></p>
+                <p><strong>Why:</strong> When you create Number objects with <code>new Number()</code>, you create separate object instances. Even though they contain the same value (10), they are different objects in memory. Object comparison (==) compares references, not values.</p>
+                
+                <p><strong>Statement B Result:</strong> <span class="highlight">false</span></p>
+                <p><strong>Why:</strong> Similar to Number objects, arrays are objects. Two arrays with identical contents are still different objects in memory. Array comparison compares references, not the array contents.</p>
+                
+                <p><strong>Key Learning:</strong> In JavaScript, objects (including Number objects and arrays) are compared by reference, not by value. Even if they have identical content, they are considered different if they are separate instances.</p>
+            </div>
+            
+            <button onclick="showAllComparisons()">Show All Comparison Examples</button>
+            <div id="allComparisons" class="output" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Part 1: Array formatting
+        function displayArrayFormatted() {
+            var arr = [10.2, 20, 34, 333.12345];
+            var output = "Original array: " + JSON.stringify(arr) + "\n\n";
+            output += "Formatted with same length (6 decimal places):\n";
+            
+            for (var i = 0; i < arr.length; i++) {
+                output += arr[i].toFixed(6) + "\n";
+            }
+            
+            document.getElementById('arrayOutput').innerHTML = "<pre>" + output + "</pre>";
+            document.getElementById('arrayOutput').style.display = 'block';
+        }
+        
+        // Part 2A: Number object comparison
+        function testStatementA() {
+            var t1 = new Number(10);
+            var t2 = new Number(10);
+            var result = t1 == t2;
+            
+            var output = "var t1 = new Number(10);\n";
+            output += "var t2 = new Number(10);\n";
+            output += "console.log(t1 == t2);\n\n";
+            output += "Result: " + result + "\n\n";
+            output += "Explanation: Two different Number objects, even with same value, are not equal\n";
+            output += "because they are different objects in memory.";
+            
+            document.getElementById('statementAOutput').innerHTML = "<pre>" + output + "</pre>";
+            document.getElementById('statementAOutput').style.display = 'block';
+            
+            console.log("Statement A - t1 == t2:", result);
+        }
+        
+        // Part 2B: Array comparison
+        function testStatementB() {
+            var result = [1,2,3] == [1,2,3];
+            
+            var output = "console.log([1,2,3] == [1,2,3]);\n\n";
+            output += "Result: " + result + "\n\n";
+            output += "Explanation: Two arrays with identical contents are still different objects\n";
+            output += "in memory, so the comparison returns false.";
+            
+            document.getElementById('statementBOutput').innerHTML = "<pre>" + output + "</pre>";
+            document.getElementById('statementBOutput').style.display = 'block';
+            
+            console.log("Statement B - [1,2,3] == [1,2,3]:", result);
+        }
+        
+        function showAllComparisons() {
+            var output = "Additional Comparison Examples:\n\n";
+            
+            var t1 = new Number(10);
+            var t2 = new Number(10);
+            var t3 = t1;
+            
+            output += "1. Number Objects:\n";
+            output += "   var t1 = new Number(10);\n";
+            output += "   var t2 = new Number(10);\n";
+            output += "   var t3 = t1;\n";
+            output += "   t1 == t2: " + (t1 == t2) + " (different objects)\n";
+            output += "   t1 === t2: " + (t1 === t2) + " (different objects)\n";
+            output += "   t1 == t3: " + (t1 == t3) + " (same reference)\n";
+            output += "   t1.valueOf() == t2.valueOf(): " + (t1.valueOf() == t2.valueOf()) + " (comparing values)\n\n";
+            
+            var arr1 = [1,2,3];
+            var arr2 = [1,2,3];
+            var arr3 = arr1;
+            
+            output += "2. Arrays:\n";
+            output += "   var arr1 = [1,2,3];\n";
+            output += "   var arr2 = [1,2,3];\n";
+            output += "   var arr3 = arr1;\n";
+            output += "   arr1 == arr2: " + (arr1 == arr2) + " (different objects)\n";
+            output += "   arr1 === arr2: " + (arr1 === arr2) + " (different objects)\n";
+            output += "   arr1 == arr3: " + (arr1 == arr3) + " (same reference)\n";
+            output += "   JSON.stringify(arr1) === JSON.stringify(arr2): " + (JSON.stringify(arr1) === JSON.stringify(arr2)) + " (comparing content as strings)\n\n";
+            
+            output += "3. Primitive vs Object:\n";
+            output += "   var primitive = 10;\n";
+            output += "   var objectNum = new Number(10);\n";
+            output += "   primitive == objectNum: " + (10 == new Number(10)) + " (type coercion)\n";
+            output += "   primitive === objectNum: " + (10 === new Number(10)) + " (strict comparison)\n";
+            
+            document.getElementById('allComparisons').innerHTML = "<pre>" + output + "</pre>";
+            document.getElementById('allComparisons').style.display = 'block';
+        }
+        
+        console.log("=== Array Formatting Demo ===");
+        var arr = [10.2, 20, 34, 333.12345];
+        console.log("Original array:", arr);
+        console.log("Formatted:");
+        arr.forEach(function(num) {
+            console.log(num.toFixed(6));
+        });
+        
+        console.log("\n=== Number Object Comparison Demo ===");
+        var t1 = new Number(10);
+        var t2 = new Number(10);
+        console.log("t1 == t2:", t1 == t2);
+        console.log("[1,2,3] == [1,2,3]:", [1,2,3] == [1,2,3]);
+    </script>
+</body>
+</html>

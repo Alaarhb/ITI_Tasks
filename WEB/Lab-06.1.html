@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array Input</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .dialog-container {
+            background-color: #c0c0c0;
+            border: 2px outset #c0c0c0;
+            padding: 20px;
+            width: 350px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .dialog-header {
+            background-color: #000080;
+            color: white;
+            padding: 5px 10px;
+            margin: -20px -20px 15px -20px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .input-section {
+            background-color: white;
+            border: 1px inset #c0c0c0;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: #000;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 4px;
+            border: 1px inset #c0c0c0;
+            font-size: 12px;
+            box-sizing: border-box;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        button {
+            padding: 5px 20px;
+            margin: 0 5px;
+            border: 1px outset #c0c0c0;
+            background-color: #c0c0c0;
+            font-size: 11px;
+            cursor: pointer;
+            min-width: 70px;
+        }
+
+        button:active {
+            border: 1px inset #c0c0c0;
+        }
+
+        .result-section {
+            margin-top: 20px;
+            background-color: white;
+            border: 1px inset #c0c0c0;
+            padding: 15px;
+            display: none;
+        }
+
+        .result-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #000080;
+        }
+
+        .array-display {
+            background-color: #f8f8f8;
+            border: 1px solid #ccc;
+            padding: 10px;
+            font-family: monospace;
+            margin: 5px 0;
+        }
+
+        .error {
+            color: red;
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
+        .info {
+            font-size: 11px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dialog-container">
+        <div class="dialog-header">Array Input Dialog</div>
+        
+        <div class="input-section">
+            <label for="arrayInput">Enter array values:</label>
+            <input type="text" id="arrayInput" placeholder="e.g., 1,2,3,4,5" value="1,2,3,4,5">
+            <div class="info">Enter numbers separated by commas</div>
+            <div id="errorMessage" class="error"></div>
+        </div>
+
+        <div class="button-container">
+            <button onclick="processArray()">OK</button>
+            <button onclick="cancelInput()">Cancel</button>
+        </div>
+
+        <div id="resultSection" class="result-section">
+            <div class="result-title">Array Processing Results:</div>
+            <div><strong>Original Input:</strong></div>
+            <div id="originalInput" class="array-display"></div>
+            <div><strong>Parsed Array:</strong></div>
+            <div id="parsedArray" class="array-display"></div>
+            <div><strong>Array Length:</strong> <span id="arrayLength"></span></div>
+            <div><strong>Sum:</strong> <span id="arraySum"></span></div>
+            <div><strong>Average:</strong> <span id="arrayAverage"></span></div>
+            <div><strong>Min:</strong> <span id="arrayMin"></span></div>
+            <div><strong>Max:</strong> <span id="arrayMax"></span></div>
+        </div>
+    </div>
+
+    <script>
+        function processArray() {
+            const input = document.getElementById('arrayInput').value.trim();
+            const errorDiv = document.getElementById('errorMessage');
+            const resultSection = document.getElementById('resultSection');
+            
+            errorDiv.textContent = '';
+            
+            if (!input) {
+                errorDiv.textContent = 'Please enter some values!';
+                return;
+            }
+
+            try {
+                const stringArray = input.split(',').map(s => s.trim());
+                const numberArray = stringArray.map(s => {
+                    const num = parseFloat(s);
+                    if (isNaN(num)) {
+                        throw new Error(`"${s}" is not a valid number`);
+                    }
+                    return num;
+                });
+
+                document.getElementById('originalInput').textContent = input;
+                document.getElementById('parsedArray').textContent = '[' + numberArray.join(', ') + ']';
+                document.getElementById('arrayLength').textContent = numberArray.length;
+                
+                const sum = numberArray.reduce((a, b) => a + b, 0);
+                const average = sum / numberArray.length;
+                const min = Math.min(...numberArray);
+                const max = Math.max(...numberArray);
+                
+                document.getElementById('arraySum').textContent = sum.toFixed(2);
+                document.getElementById('arrayAverage').textContent = average.toFixed(2);
+                document.getElementById('arrayMin').textContent = min;
+                document.getElementById('arrayMax').textContent = max;
+                
+                resultSection.style.display = 'block';
+                
+            } catch (error) {
+                errorDiv.textContent = 'Error: ' + error.message;
+                resultSection.style.display = 'none';
+            }
+        }
+
+        function cancelInput() {
+            document.getElementById('arrayInput').value = '';
+            document.getElementById('errorMessage').textContent = '';
+            document.getElementById('resultSection').style.display = 'none';
+        }
+
+        document.getElementById('arrayInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                processArray();
+            }
+        });
+
+        window.onload = function() {
+            document.getElementById('arrayInput').focus();
+        };
+    </script>
+</body>
+</html>

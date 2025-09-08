@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-title {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 300;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input[type="text"], input[type="tel"] {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        input[type="text"]:focus, input[type="tel"]:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .success {
+            color: #27ae60;
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .input-valid {
+            border-color: #27ae60 !important;
+        }
+
+        .input-invalid {
+            border-color: #e74c3c !important;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .requirements {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 4px solid #667eea;
+        }
+
+        .requirements h4 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .requirements ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .requirements li {
+            color: #666;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+            font-size: 14px;
+        }
+
+        .requirements li::before {
+            content: "•";
+            color: #667eea;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        @keyframes shake {
+            0%, 20%, 40%, 60%, 80% {
+                transform: translateX(-5px);
+            }
+            10%, 30%, 50%, 70%, 90% {
+                transform: translateX(5px);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 20px;
+            border: 1px solid #c3e6cb;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2 class="form-title">User Registration</h2>
+        
+        <div class="requirements">
+            <h4>Mobile Number Requirements:</h4>
+            <ul>
+                <li>Format: xxx-xxxxxxx (11 digits total)</li>
+                <li>Length: Exactly 11 digits</li>
+                <li>Must start with: 010, 011, 012, or 015</li>
+            </ul>
+        </div>
+
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="userName">Full Name</label>
+                <input type="text" id="userName" name="userName" placeholder="Enter your full name">
+                <div class="error" id="nameError">Please enter a valid name (letters and spaces only)</div>
+                <div class="success" id="nameSuccess">✓ Valid name</div>
+            </div>
+
+            <div class="form-group">
+                <label for="mobileNumber">Mobile Number</label>
+                <input type="tel" id="mobileNumber" name="mobileNumber" placeholder="010-1234567" maxlength="11">
+                <div class="error" id="mobileError">Invalid mobile number format</div>
+                <div class="success" id="mobileSuccess">✓ Valid mobile number</div>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn" disabled>Submit Registration</button>
+        </form>
+
+        <div class="success-message" id="successMessage">
+            <h3>Registration Successful!</h3>
+            <p>Welcome! Your information has been registered successfully.</p>
+        </div>
+    </div>
+
+    <script>
+        const nameInput = document.getElementById('userName');
+        const mobileInput = document.getElementById('mobileNumber');
+        const submitBtn = document.getElementById('submitBtn');
+        const form = document.getElementById('registrationForm');
+        
+        let nameValid = false;
+        let mobileValid = false;
+
+        function validateName() {
+            const name = nameInput.value.trim();
+            const nameError = document.getElementById('nameError');
+            const nameSuccess = document.getElementById('nameSuccess');
+
+            const namePattern = /^[a-zA-Z\s]+$/;
+            
+            if (name === '') {
+                nameInput.classList.remove('input-valid', 'input-invalid');
+                nameError.style.display = 'none';
+                nameSuccess.style.display = 'none';
+                nameValid = false;
+            } else if (name.length < 2 || !namePattern.test(name)) {
+                nameInput.classList.add('input-invalid');
+                nameInput.classList.remove('input-valid');
+                nameError.style.display = 'block';
+                nameSuccess.style.display = 'none';
+                nameValid = false;
+            } else {
+                nameInput.classList.add('input-valid');
+                nameInput.classList.remove('input-invalid');
+                nameError.style.display = 'none';
+                nameSuccess.style.display = 'block';
+                nameValid = true;
+            }
+            
+            updateSubmitButton();
+        }
+
+        function validateMobile() {
+            const mobile = mobileInput.value.trim();
+            const mobileError = document.getElementById('mobileError');
+            const mobileSuccess = document.getElementById('mobileSuccess');
+            
+            const mobilePattern = /^(010|011|012|015)-\d{7}$/;
+            
+            if (mobile === '') {
+                mobileInput.classList.remove('input-valid', 'input-invalid');
+                mobileError.style.display = 'none';
+                mobileSuccess.style.display = 'none';
+                mobileValid = false;
+            } else if (!mobilePattern.test(mobile) || mobile.length !== 11) {
+                mobileInput.classList.add('input-invalid');
+                mobileInput.classList.remove('input-valid');
+                mobileError.textContent = 'Format must be xxx-xxxxxxx, 11 digits, starting with 010/011/012/015';
+                mobileError.style.display = 'block';
+                mobileSuccess.style.display = 'none';
+                mobileValid = false;
+            } else {
+                mobileInput.classList.add('input-valid');
+                mobileInput.classList.remove('input-invalid');
+                mobileError.style.display = 'none';
+                mobileSuccess.style.display = 'block';
+                mobileValid = true;
+            }
+            
+            updateSubmitButton();
+        }
+
+        function formatMobile() {
+            let value = mobileInput.value.replace(/\D/g, ''); 
+            
+            if (value.length >= 3) {
+                value = value.substring(0, 3) + '-' + value.substring(3, 10);
+            }
+            
+            mobileInput.value = value;
+            validateMobile();
+        }
+
+        function updateSubmitButton() {
+            if (nameValid && mobileValid) {
+                submitBtn.disabled = false;
+            } else {
+                submitBtn.disabled = true;
+            }
+        }
+
+        nameInput.addEventListener('input', validateName);
+        nameInput.addEventListener('blur', validateName);
+        
+        mobileInput.addEventListener('input', formatMobile);
+        mobileInput.addEventListener('blur', validateMobile);
+
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (nameValid && mobileValid) {
+
+                document.getElementById('successMessage').style.display = 'block';
+                form.style.display = 'none';
+
+                console.log('Registration Data:', {
+                    name: nameInput.value.trim(),
+                    mobile: mobileInput.value.trim()
+                });
+            }
+        });
+
+        mobileInput.addEventListener('keypress', function(e) {
+            const char = String.fromCharCode(e.which);
+            if (!/[\d-]/.test(char) && !e.ctrlKey && !e.metaKey && e.which !== 8 && e.which !== 46) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>

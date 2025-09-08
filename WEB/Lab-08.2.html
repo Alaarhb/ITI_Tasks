@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rest Operator Function Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .demo-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+
+        .console-output {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            margin: 15px 0;
+            min-height: 200px;
+            overflow-y: auto;
+            border: 2px solid #333;
+        }
+
+        .console-line {
+            margin-bottom: 5px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .code-display {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            border: 2px solid #e9ecef;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚡ Rest Operator Function Demo</h1>
+        
+        <div class="demo-section">
+            <h2>JavaScript Function Code</h2>
+            <div class="code-display">
+const calculate = (operator, ...numbers) => {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;let result;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;switch(operator) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case '+':<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = numbers.reduce((sum, num) => sum + num, 0);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case '-':<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = numbers.reduce((diff, num) => diff - num);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case '*':<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = numbers.reduce((prod, num) => prod * num, 1);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case '/':<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = numbers.reduce((quot, num) => quot / num);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;console.log(`result of ${operator} operation for ${numbers.join(',')} is ${result}`);<br>
+};
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>Console Output</h2>
+            <div class="console-output" id="consoleOutput"></div>
+            
+            <div style="margin-top: 20px;">
+                <button class="button" onclick="runDemo('sum')">Run Sum Demo</button>
+                <button class="button" onclick="runDemo('subtract')">Run Subtract Demo</button>
+                <button class="button" onclick="runDemo('multiply')">Run Multiply Demo</button>
+                <button class="button" onclick="runDemo('divide')">Run Divide Demo</button>
+                <button class="button" onclick="clearConsole()">Clear Console</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let consoleLines = [];
+
+        const calculate = (operator, ...numbers) => {
+            let result;
+            switch(operator) {
+                case '+':
+                    result = numbers.reduce((sum, num) => sum + num, 0);
+                    break;
+                case '-':
+                    result = numbers.reduce((diff, num) => diff - num);
+                    break;
+                case '*':
+                    result = numbers.reduce((prod, num) => prod * num, 1);
+                    break;
+                case '/':
+                    result = numbers.reduce((quot, num) => quot / num);
+                    break;
+            }
+            const output = `result of ${operator} operation for ${numbers.join(',')} is ${result}`;
+            console.log(output);
+            addToConsoleDisplay(output);
+        };
+
+        const addToConsoleDisplay = (text) => {
+            consoleLines.push(text);
+            const consoleElement = document.getElementById('consoleOutput');
+            consoleElement.innerHTML = consoleLines.map(line => `<div class="console-line">${line}</div>`).join('');
+            consoleElement.scrollTop = consoleElement.scrollHeight;
+        };
+
+        const runDemo = (type) => {
+            switch(type) {
+                case 'sum':
+                    calculate('+', 3, 1, 6, 3);
+                    break;
+                case 'subtract':
+                    calculate('-', 20, 5, 3);
+                    break;
+                case 'multiply':
+                    calculate('*', 2, 4, 3);
+                    break;
+                case 'divide':
+                    calculate('/', 100, 5, 2);
+                    break;
+            }
+        };
+
+        const clearConsole = () => {
+            consoleLines = [];
+            document.getElementById('consoleOutput').innerHTML = '';
+        };
+
+        window.addEventListener('load', () => {
+            addToConsoleDisplay('Console ready. Click buttons to run demos!');
+            addToConsoleDisplay('');
+        });
+    </script>
+</body>
+</html>

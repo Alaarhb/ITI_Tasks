@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array Mathematical Operations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f8ff;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 2px solid #ddd;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .input-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #495057;
+        }
+        
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .results-section {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .result-line {
+            font-size: 16px;
+            margin: 10px 0;
+            padding: 8px;
+            border-radius: 3px;
+        }
+        
+        .sum-result {
+            color: #e74c3c;
+            background-color: #fdf2f2;
+        }
+        
+        .multiply-result {
+            color: #e74c3c;
+            background-color: #fdf2f2;
+        }
+        
+        .divide-result {
+            color: #e74c3c;
+            background-color: #fdf2f2;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Adding -- Multiplying -- and dividing 3 values</h1>
+        
+        <div class="input-section">
+            <div class="input-group">
+                <label for="value1">Enter first value:</label>
+                <input type="number" id="value1" placeholder="Enter first number..." step="any">
+            </div>
+            
+            <div class="input-group">
+                <label for="value2">Enter second value:</label>
+                <input type="number" id="value2" placeholder="Enter second number..." step="any">
+            </div>
+            
+            <div class="input-group">
+                <label for="value3">Enter third value:</label>
+                <input type="number" id="value3" placeholder="Enter third number..." step="any">
+            </div>
+            
+            <button onclick="calculateOperations()">Calculate Operations</button>
+        </div>
+        
+        <div class="results-section hidden" id="results">
+            <div id="sumResult" class="result-line sum-result"></div>
+            <div id="multiplyResult" class="result-line multiply-result"></div>
+            <div id="divideResult" class="result-line divide-result"></div>
+        </div>
+    </div>
+
+    <script>
+        function calculateOperations() {
+            const value1 = parseFloat(document.getElementById('value1').value);
+            const value2 = parseFloat(document.getElementById('value2').value);
+            const value3 = parseFloat(document.getElementById('value3').value);
+            
+            if (isNaN(value1) || isNaN(value2) || isNaN(value3)) {
+                alert('Please enter valid numeric values for all three fields!');
+                return;
+            }
+            
+            const values = [value1, value2, value3];
+            
+            const sum = values[0] + values[1] + values[2];
+            const product = values[0] * values[1] * values[2];
+            const division = values[0] / values[1] / values[2];
+            
+            document.getElementById('sumResult').innerHTML = 
+                `<strong>sum of the 3 values</strong> ${values[0]}+${values[1]}+${values[2]} = ${sum}`;
+                
+            document.getElementById('multiplyResult').innerHTML = 
+                `<strong>multiplication of the 3 values</strong> ${values[0]}*${values[1]}*${values[2]} = ${product}`;
+                
+            document.getElementById('divideResult').innerHTML = 
+                `<strong>division of the 3 values</strong>of the 3 values ${values[0]}/${values[1]}/${values[2]} = ${division}`;
+            
+            document.getElementById('results').classList.remove('hidden');
+        }
+        
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculateOperations();
+            }
+        });
+    </script>
+</body>
+</html>

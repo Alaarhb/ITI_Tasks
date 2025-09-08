@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Heading Display</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .input-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #e8f4f8;
+            border-radius: 5px;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        
+        button {
+            background-color: #007cba;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #005a87;
+        }
+        
+        .output-section {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            min-height: 100px;
+        }
+        
+        .heading-container {
+            margin: 10px 0;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dynamic Heading Display</h1>
+        
+        <div class="input-section">
+            <label for="messageInput">Enter your message:</label>
+            <input type="text" id="messageInput" placeholder="Type your message here..." />
+            <button onclick="displayHeadings()">Display as Headings</button>
+        </div>
+        
+        <div class="output-section" id="output">
+            <p>Your message will appear here in different heading sizes...</p>
+        </div>
+    </div>
+
+    <script>
+        function displayHeadings() {
+            const message = document.getElementById('messageInput').value.trim();
+            const output = document.getElementById('output');
+            
+            if (message === '') {
+                output.innerHTML = '<p style="color: red;">Please enter a message first!</p>';
+                return;
+            }
+            
+            output.innerHTML = '';
+            
+            for (let i = 1; i <= 6; i++) {
+                const headingContainer = document.createElement('div');
+                headingContainer.className = 'heading-container';
+                
+                const heading = document.createElement('h' + i);
+                heading.textContent = message;
+                
+                headingContainer.appendChild(heading);
+                output.appendChild(headingContainer);
+            }
+        }
+        
+        
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                displayHeadings();
+            }
+        });
+    </script>
+</body>
+</html>

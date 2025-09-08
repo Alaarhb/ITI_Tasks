@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Display with Custom Color</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .input-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #495057;
+        }
+        
+        input[type="text"], input[type="color"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        
+        input[type="color"] {
+            height: 50px;
+            cursor: pointer;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .display-section {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .image-container {
+            display: inline-block;
+            padding: 20px;
+            border: 5px solid #000;
+            border-radius: 10px;
+            margin: 20px 0;
+            background-color: #fff;
+        }
+        
+        .image-container img {
+            max-width: 300px;
+            max-height: 300px;
+            display: block;
+        }
+        
+        .image-text {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            background-color: #fdf2f2;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Image Display with Custom Color</h1>
+        
+        <div class="input-section">
+            <div class="input-group">
+                <label for="imageName">Enter image name (with extension):</label>
+                <input type="text" id="imageName" placeholder="e.g., image.jpg, photo.png, etc...">
+            </div>
+            
+            <div class="input-group">
+                <label for="fontColor">Choose font/border color:</label>
+                <input type="color" id="fontColor" value="#008000">
+            </div>
+            
+            <button onclick="displayImage()">Display Image</button>
+        </div>
+        
+        <div class="display-section hidden" id="displaySection">
+            <div class="image-text" id="imageText">This is ur image</div>
+            <div class="image-container" id="imageContainer">
+                <img id="displayedImage" src="" alt="User selected image">
+            </div>
+        </div>
+        
+        <div id="errorMessage" class="error-message hidden"></div>
+    </div>
+
+    <script>
+        function displayImage() {
+            const imageName = document.getElementById('imageName').value.trim();
+            const fontColor = document.getElementById('fontColor').value;
+            
+            if (imageName === '') {
+                showError('Please enter an image name!');
+                return;
+            }
+            
+            const displaySection = document.getElementById('displaySection');
+            const imageText = document.getElementById('imageText');
+            const imageContainer = document.getElementById('imageContainer');
+            const displayedImage = document.getElementById('displayedImage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            errorMessage.classList.add('hidden');
+    
+            imageText.style.color = fontColor;
+            imageContainer.style.borderColor = fontColor;
+            
+            displayedImage.src = imageName;
+            displayedImage.alt = imageName;
+            
+            displayedImage.onerror = function() {
+                showError(`Error: Could not load image "${imageName}". Please check the image name and make sure it exists in the same directory as this HTML file.`);
+                displaySection.classList.add('hidden');
+            };
+            
+            displayedImage.onload = function() {
+                displaySection.classList.remove('hidden');
+                errorMessage.classList.add('hidden');
+            };
+            
+            displaySection.classList.remove('hidden');
+        }
+        
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message;
+            errorMessage.classList.remove('hidden');
+            document.getElementById('displaySection').classList.add('hidden');
+        }
+        
+        document.getElementById('imageName').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                displayImage();
+            }
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+           // document.getElementById('imageName').value = 'https://via.placeholder.com/200x200/FFD700/000000?text=Sample';
+        });
+    </script>
+</body>
+</html>

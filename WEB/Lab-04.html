@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI & Machine Learning Hub</title>
+<style>
+    body {
+        padding: 40px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        margin: 0;
+    }
+    .page-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+    .page-wrapper:hover .main-page {
+        transform: skew(2deg, -1deg);
+    }
+    .main-page {
+        width: 90%;
+        max-width: 1400px;
+        border: 5px solid #00d4ff;
+        border-radius: 25px;
+        padding: 20px;
+        box-shadow: 0 0 40px rgba(0, 212, 255, 0.6), 0 0 80px rgba(138, 43, 226, 0.3);
+        transition: transform 0.25s ease-in-out;
+        transform-origin: center;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+    }
+    .content-wrapper {
+        display: flex;
+        gap: 25px;
+    }
+    .main-page.scaled-down {
+        transform: scale(0.7);
+        filter: brightness(0.9) blur(0.5px);
+        transition: transform 0.28s cubic-bezier(.2,.8,.2,1), filter 0.28s ease;
+    }
+    .text-box {
+        flex: 1;
+        display: flex;
+        box-shadow: 0 0 30px rgba(138, 43, 226, 0.4);
+        gap: 20px;
+        background: linear-gradient(135deg,
+            rgba(0, 212, 255, 0.1) 0%,
+            rgba(138, 43, 226, 0.1) 50%,
+            rgba(255, 20, 147, 0.1) 100%
+        );
+        border-radius: 15px;
+        padding: 20px;
+        overflow-y: auto;
+        height: 650px;
+        border: 2px solid rgba(0, 212, 255, 0.3);
+    }
+    .column {
+        flex: 1;
+        font-size: 15px;
+        line-height: 1.7;
+        color: #2c3e50;
+    }
+    .column h4 {
+        color: #8a2be2;
+        font-size: 1.3em;
+        margin-bottom: 15px;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    .column-1 p:hover {
+        text-decoration: underline;
+        cursor: pointer;
+        color: #00d4ff;
+        transition: color 0.3s ease;
+    }
+    .column-2 span {
+        background: linear-gradient(45deg, #ff1493, #00d4ff);
+        color: white;
+        padding: 3px 6px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+    .column-2 span:hover {
+        background: linear-gradient(45deg, #8a2be2, #ff1493);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .gallery-box {
+        flex: 2;
+        background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(138, 43, 226, 0.05) 100%);
+        border: 3px solid #00d4ff;
+        box-shadow: 0 0 35px rgba(138, 43, 226, 0.4);
+        border-radius: 15px;
+        padding: 20px;
+        overflow-y: auto;
+        height: 650px;
+    }
+    .gallery-header {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #8a2be2;
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+    .image-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+    }
+    .image-container {
+        border: 4px solid #ff1493;
+        padding: 8px;
+        background: white;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        transform: rotate(-2deg);
+        transition: all 0.3s ease;
+        border-radius: 8px;
+    }
+    .image-container:nth-child(even) {
+        transform: rotate(2deg);
+    }
+    .image-container:hover {
+        transform: rotate(0deg) scale(1.05);
+        box-shadow: 0 8px 25px rgba(138, 43, 226, 0.4);
+    }
+    .gallery-image {
+        width: 100%;
+        height: auto;
+        display: block;
+        cursor: pointer;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        outline: none;
+        border-radius: 6px;
+    }
+    .gallery-image.zoomed {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(2.2);
+        z-index: 11000;
+        box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+        border-radius: 15px;
+        border: 8px solid rgba(255,255,255,0.95);
+        max-width: 90vw;
+        max-height: 90vh;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        transition: transform 0.3s cubic-bezier(.2,.8,.2,1), box-shadow 0.3s ease;
+    }
+    .image-container.zoom-anchor {
+        transform: none;
+        z-index: 10999;
+    }
+    
+    .tech-highlight {
+        background: linear-gradient(45deg, #00d4ff, #8a2be2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: bold;
+    }
+    
+    @media (max-width: 1024px) {
+        .content-wrapper { flex-direction: column; }
+        .image-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 768px) {
+        .image-grid { grid-template-columns: repeat(2, 1fr); }
+        body { padding: 20px; }
+    }
+    @media (max-width: 480px) {
+        body { padding: 10px; }
+        .text-box { flex-direction: column; }
+        .image-grid { grid-template-columns: repeat(1, 1fr); }
+        .gallery-image.zoomed {
+            transform: translate(-50%, -50%) scale(1.8);
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="page-wrapper">
+    <div class="main-page" id="mainPage">
+        <div class="content-wrapper">
+            <div class="text-box">
+                <div class="column column-1">
+                    <h4>🤖 Artificial Intelligence</h4>
+                    <p>Artificial Intelligence represents the simulation of human intelligence processes by machines, especially computer systems. These processes include <span class="tech-highlight">learning, reasoning, and self-correction</span>. AI systems can perform tasks that typically require human intelligence, such as visual perception, speech recognition, decision-making, and language translation.</p>
+                    <p>Modern AI applications span across various industries, from autonomous vehicles to medical diagnosis, transforming how we interact with technology daily.</p>
+                </div>
+                
+                <div class="column column-2">
+                    <h4>🧠 Machine Learning</h4>
+                    <p><span>Machine Learning is a subset of AI that provides systems the ability to automatically learn and improve from experience without being explicitly programmed. ML focuses on the development of computer programs that can access data and use it to learn for themselves.</span></p>
+                    <p>The process begins with observations or data, such as examples, direct experience, or instruction, to look for patterns in data and make better decisions in the future based on the examples provided.</p>
+                </div>
+                
+                <div class="column column-3">
+                    <h4>🔥 Deep Learning</h4>
+                    <p>Deep Learning is a specialized subset of machine learning that mimics the workings of the human brain in processing data for use in decision making. It uses <span class="tech-highlight">artificial neural networks</span> with multiple layers to model and understand complex patterns.</p>
+                    <p>Deep learning has revolutionized fields like computer vision, natural language processing, and speech recognition, enabling breakthroughs in image classification, language translation, and autonomous systems.</p>
+                </div>
+            </div>
+            
+            <div class="gallery-box">
+                <div class="gallery-header">AI & ML Visual Gallery</div>
+                <div class="image-grid" id="imageGrid">
+                    <div class="image-container"><img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=400&fit=crop" alt="AI Neural Network" class="gallery-image" tabindex="0"></div>
+                    <div class="image-container"><img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=400&h=400&fit=crop" alt="Machine Learning Code" class="gallery-image" tabindex="0"></div>
+                    <div class="image-container"><img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&h=400&fit=crop" alt="Deep Learning Network" class="gallery-image" tabindex="0"></div>
+                    <div class="image-container"><img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=400&fit=crop" alt="AI Robot Technology" class="gallery-image" tabindex="0"></div>
+                    <div class="image-container"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=400&fit=crop" alt="Data Science Analytics" class="gallery-image" tabindex="0"></div>
+                    <div class="image-container"><img src="https://images.unsplash.com/photo-1559028006-448665bd7c7f?w=400&h=400&fit=crop" alt="Artificial Intelligence Brain" class="gallery-image" tabindex="0"></div>
+                    <div class="image-container"><img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=400&fit=crop" alt="Machine Learning Algorithms" class="gallery-image" tabindex="0"></div>
+                    <div class="image-container"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop" alt="Computer Vision AI" class="gallery-image" tabindex="0"></div>
+                    <div class="image-container"><img src="https://images.unsplash.com/photo-1591453089816-0fbb971b454c?w=400&h=400&fit=crop" alt="Neural Network Processing" class="gallery-image" tabindex="0"></div>
+                    <div class="image-container"><img src="https://images.unsplash.com/photo-1555255707-c07966088b7b?w=400&h=400&fit=crop" alt="AI Automation Robot" class="gallery-image" tabindex="0"></div>
+                    <div class="image-container"><img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=400&h=400&fit=crop" alt="Future AI Technology" class="gallery-image" tabindex="0"></div>
+                    <div class="image-container"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=400&fit=crop" alt="AI Circuit Board" class="gallery-image" tabindex="0"></div>
+                    <div class="image-container"><img src="https://images.unsplash.com/photo-1516110833967-0b5716ca1387?w=400&h=400&fit=crop" alt="Digital AI Brain" class="gallery-image" tabindex="0"></div>
+                    <div class="image-container"><img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400&h=400&fit=crop" alt="Machine Learning Data" class="gallery-image" tabindex="0"></div>
+                    <div class="image-container"><img src="https://images.unsplash.com/photo-1535378917042-10a22c95931a?w=400&h=400&fit=crop" alt="AI Innovation Tech" class="gallery-image" tabindex="0"></div>
+                    <div class="image-container"><img src="https://images.unsplash.com/photo-1606166187734-a4cb72d51780?w=400&h=400&fit=crop" alt="Digital Neural Network" class="gallery-image" tabindex="0"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>  
+    var grid = document.querySelector('.image-grid');
+    var main_page = document.getElementById('mainPage');
+
+    function resetZoom() {
+        var current = document.querySelector('.gallery-image.zoomed');
+        if (current) {
+            current.classList.remove('zoomed');
+            main_page.classList.remove('scaled-down');
+            document.querySelectorAll('.image-container').forEach(c => c.classList.remove('zoom-anchor'));
+        }
+    }
+
+    grid.addEventListener('click', function (e) {
+        var img = e.target.closest('.gallery-image');
+        if (!img) { return };
+        e.stopPropagation();
+
+        var isAlreadyZoomed = img.classList.contains('zoomed');
+        
+        resetZoom(); 
+
+        if (!isAlreadyZoomed) {
+            img.classList.add('zoomed');
+            main_page.classList.add('scaled-down');
+            var parent = img.closest('.image-container');
+            if (parent) {
+                parent.classList.add('zoom-anchor');
+            }
+        }
+    });
+
+    document.addEventListener('click', resetZoom);
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            var current = document.querySelector('.gallery-image.zoomed');
+            if (current) {
+                current.classList.remove('zoomed');
+                main_page.classList.remove('scaled-down');
+                document.querySelectorAll('.image-container').forEach(c => c.classList.remove('zoom-anchor'));
+            }
+        }
+    });
+
+    document.querySelectorAll('.column p').forEach(p => {
+        p.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-2px)';
+            this.style.transition = 'transform 0.2s ease';
+        });
+        
+        p.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Number Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            border: 3px solid #ff0000;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            min-width: 300px;
+        }
+
+        .title {
+            background-color: #ff0000;
+            color: white;
+            padding: 10px;
+            margin: -30px -30px 20px -30px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .number-display {
+            font-size: 48px;
+            font-weight: bold;
+            color: #333;
+            background-color: #f8f8f8;
+            border: 2px solid #ccc;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .generate-btn {
+            background-color: #007acc;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .generate-btn:hover {
+            background-color: #005999;
+        }
+
+        .generate-btn:active {
+            transform: translateY(1px);
+        }
+
+        .multiple-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 3px;
+            margin: 5px;
+        }
+
+        .multiple-btn:hover {
+            background-color: #218838;
+        }
+
+        .controls {
+            margin-top: 20px;
+        }
+
+        .history {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .history-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .history-list {
+            background-color: #f8f8f8;
+            border: 1px solid #ccc;
+            padding: 10px;
+            max-height: 100px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 14px;
+        }
+
+        .stats {
+            margin-top: 15px;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Generate random number between 0-9</div>
+        
+        <div class="number-display" id="numberDisplay">?</div>
+        
+        <div class="controls">
+            <button class="generate-btn" onclick="generateSingle()">Generate Random Number</button>
+            <br>
+            <button class="multiple-btn" onclick="generateMultiple(5)">Generate 5</button>
+            <button class="multiple-btn" onclick="generateMultiple(10)">Generate 10</button>
+            <button class="multiple-btn" onclick="clearHistory()">Clear History</button>
+        </div>
+
+        <div class="history">
+            <div class="history-title">Generated Numbers:</div>
+            <div class="history-list" id="historyList">Click "Generate Random Number" to start...</div>
+            <div class="stats" id="stats"></div>
+        </div>
+    </div>
+
+    <script>
+        let generatedNumbers = [];
+
+        function generateRandomNumber() {
+            return Math.floor(Math.random() * 10); // 0 to 9
+        }
+
+        function generateSingle() {
+            const randomNum = generateRandomNumber();
+            
+            const display = document.getElementById('numberDisplay');
+            display.style.transform = 'scale(1.2)';
+            display.style.color = '#ff0000';
+            display.textContent = randomNum;
+            
+            setTimeout(() => {
+                display.style.transform = 'scale(1)';
+                display.style.color = '#333';
+            }, 200);
+
+            generatedNumbers.push(randomNum);
+            updateHistory();
+        }
+
+        function generateMultiple(count) {
+            const newNumbers = [];
+            for (let i = 0; i < count; i++) {
+                newNumbers.push(generateRandomNumber());
+            }
+            
+            const display = document.getElementById('numberDisplay');
+            display.textContent = newNumbers[newNumbers.length - 1];
+            
+            generatedNumbers.push(...newNumbers);
+            updateHistory();
+        }
+
+        function updateHistory() {
+            const historyList = document.getElementById('historyList');
+            const stats = document.getElementById('stats');
+            
+            if (generatedNumbers.length === 0) {
+                historyList.textContent = 'Click "Generate Random Number" to start...';
+                stats.textContent = '';
+                return;
+            }
+
+            const recentNumbers = generatedNumbers.slice(-20);
+            historyList.textContent = recentNumbers.join(', ');
+            
+            const total = generatedNumbers.length;
+            const sum = generatedNumbers.reduce((a, b) => a + b, 0);
+            const average = (sum / total).toFixed(2);
+            const frequency = {};
+            
+            for (let num of generatedNumbers) {
+                frequency[num] = (frequency[num] || 0) + 1;
+            }
+            
+            stats.innerHTML = `
+                Total generated: ${total} | 
+                Average: ${average} | 
+                Most frequent: ${Object.keys(frequency).reduce((a, b) => frequency[a] > frequency[b] ? a : b)}
+            `;
+        }
+
+        function clearHistory() {
+            generatedNumbers = [];
+            document.getElementById('numberDisplay').textContent = '?';
+            updateHistory();
+        }
+        
+        window.onload = function() {
+            updateHistory();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pascal Case Converter</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border: 3px solid #ff0000;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .header {
+            background-color: #ff0000;
+            color: white;
+            padding: 15px;
+            margin: -40px -40px 30px -40px;
+            font-weight: bold;
+            font-size: 20px;
+            border-radius: 12px 12px 0 0;
+            text-align: center;
+        }
+
+        .input-section {
+            margin: 25px 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .input-container {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #007acc;
+            box-shadow: 0 0 10px rgba(0, 122, 204, 0.3);
+        }
+
+        .convert-btn {
+            background: linear-gradient(45deg, #007acc, #0056b3);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            width: 100%;
+            margin: 10px 0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .convert-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 122, 204, 0.4);
+        }
+
+        .convert-btn:active {
+            transform: translateY(0);
+        }
+
+        .output-section {
+            margin: 25px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border: 2px solid #28a745;
+            border-radius: 10px;
+            min-height: 60px;
+        }
+
+        .output-label {
+            font-weight: bold;
+            color: #28a745;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .output-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            background-color: white;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            word-wrap: break-word;
+        }
+
+        .examples {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #e7f3ff;
+            border-radius: 10px;
+            border: 1px solid #b3d9ff;
+        }
+
+        .examples h3 {
+            margin-top: 0;
+            color: #0066cc;
+            font-size: 18px;
+        }
+
+        .example-item {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+            border-left: 4px solid #007acc;
+        }
+
+        .example-input {
+            font-family: monospace;
+            color: #d63384;
+            font-weight: bold;
+        }
+
+        .example-output {
+            font-family: monospace;
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .clear-btn {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-left: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .clear-btn:hover {
+            background-color: #545b62;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .button-row .convert-btn {
+            flex: 1;
+        }
+
+        .copy-btn {
+            background-color: #17a2b8;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .copy-btn:hover {
+            background-color: #138496;
+        }
+
+        .copied-message {
+            color: #28a745;
+            font-size: 12px;
+            margin-left: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .copied-message.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            6.1 - Write JS Code to Convert String into Pascal Case
+        </div>
+
+        <div class="input-section">
+            <label for="inputText">Enter text to convert:</label>
+            <div class="input-container">
+                <input type="text" id="inputText" placeholder="e.g., ali mohamed" value="ali mohamed">
+            </div>
+            
+            <div class="button-row">
+                <button class="convert-btn" onclick="convertToPascal()">Convert to Pascal Case</button>
+                <button class="clear-btn" onclick="clearInput()">Clear</button>
+            </div>
+        </div>
+
+        <div class="output-section">
+            <div class="output-label">Pascal Case Output:</div>
+            <div class="output-text" id="outputText">Ali Mohamed</div>
+            <button class="copy-btn" onclick="copyOutput()">Copy Result</button>
+            <span class="copied-message" id="copiedMessage">Copied!</span>
+        </div>
+
+        <div class="examples">
+            <h3>Examples:</h3>
+            <div class="example-item">
+                <div>Input: <span class="example-input">"ali mohamed"</span></div>
+                <div>Output: <span class="example-output">"Ali Mohamed"</span></div>
+            </div>
+            <div class="example-item">
+                <div>Input: <span class="example-input">"alaa rehab"</span></div>
+                <div>Output: <span class="example-output">"Alaa Rehab"</span></div>
+            </div>
+            <div class="example-item">
+                <div>Input: <span class="example-input">"john smith"</span></div>
+                <div>Output: <span class="example-output">"John Smith"</span></div>
+            </div>
+            <div class="example-item">
+                <div>Input: <span class="example-input">"MARY JANE WATSON"</span></div>
+                <div>Output: <span class="example-output">"Mary Jane Watson"</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toPascalCase(str) {
+            return str
+                .trim()                          
+                .toLowerCase()                  
+                .replace(/\s+/g, ' ')           
+                .split(' ')                      
+                .filter(word => word.length > 0) 
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1)) 
+                .join(' ');                    
+        }
+
+        function convertToPascal() {
+            const input = document.getElementById('inputText').value;
+            const output = document.getElementById('outputText');
+            
+            if (input.trim() === '') {
+                output.textContent = 'Please enter some text';
+                output.style.color = '#dc3545';
+                return;
+            }
+            
+            const result = toPascalCase(input);
+            output.textContent = result;
+            output.style.color = '#333';
+            
+            output.style.transform = 'scale(1.05)';
+            setTimeout(() => {
+                output.style.transform = 'scale(1)';
+            }, 200);
+        }
+
+        function clearInput() {
+            document.getElementById('inputText').value = '';
+            document.getElementById('outputText').textContent = 'Enter text above to convert';
+            document.getElementById('outputText').style.color = '#666';
+            document.getElementById('inputText').focus();
+        }
+
+        function copyOutput() {
+            const outputText = document.getElementById('outputText').textContent;
+            const copiedMessage = document.getElementById('copiedMessage');
+
+            navigator.clipboard.writeText(outputText).then(() => {
+                copiedMessage.classList.add('show');
+                setTimeout(() => {
+                    copiedMessage.classList.remove('show');
+                }, 2000);
+            }).catch(() => {
+                const textarea = document.createElement('textarea');
+                textarea.value = outputText;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                
+                copiedMessage.classList.add('show');
+                setTimeout(() => {
+                    copiedMessage.classList.remove('show');
+                }, 2000);
+            });
+        }
+
+        document.getElementById('inputText').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                convertToPascal();
+            }
+        });
+
+        document.getElementById('inputText').addEventListener('input', function() {
+            if (this.value.trim() !== '') {
+                convertToPascal();
+            }
+        });
+
+        window.onload = function() {
+            convertToPascal();
+            document.getElementById('inputText').focus();
+        };
+    </script>
+</body>
+</html>

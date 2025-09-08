@@ -1,0 +1,196 @@
+body {
+    margin: 0;
+    padding: 40px;
+    background: 
+        repeating-linear-gradient(
+            0deg,
+            #d4a085 0px,
+            #d4a085 8px,
+            #c19070 8px,
+            #c19070 9px,
+            #d4a085 9px,
+            #d4a085 17px,
+            #c19070 17px,
+            #c19070 18px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            #d4a085 0px,
+            #d4a085 25px,
+            #c19070 25px,
+            #c19070 26px,
+            #d4a085 26px,
+            #d4a085 51px,
+            #c19070 51px,
+            #c19070 52px
+        );
+    font-family: "Times New Roman", Times, serif;
+    min-height: 100vh;
+}
+
+.frame {
+    max-width: 500px;
+    margin: 0 auto;
+    background: linear-gradient(145deg, #8b5a3c, #654321);
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 
+        inset 2px 2px 5px rgba(255,255,255,0.2),
+        inset -2px -2px 5px rgba(0,0,0,0.5),
+        5px 5px 15px rgba(0,0,0,0.3);
+}
+
+.inner-frame {
+    background: white;
+    border: 2px solid #333;
+    box-shadow: inset 1px 1px 3px rgba(0,0,0,0.1);
+}
+
+.header {
+    background: linear-gradient(to bottom, #ffb3a0, #ff9980);
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e6806b;
+}
+
+.logo-left {
+    width: 50px;
+    height: 40px;
+    background: linear-gradient(to bottom, #4a6741, #2d4a22);
+    position: relative;
+    border-radius: 2px;
+}
+
+.logo-left::after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 25px solid #8B4513;
+}
+
+.title {
+    flex: 1;
+    text-align: center;
+    margin: 0 15px;
+}
+
+.title h1 {
+    margin: 0;
+    font-size: 24px;
+    font-style: italic;
+    color: #333;
+    font-weight: normal;
+}
+
+.logo-right {
+    width: 50px;
+    height: 50px;
+    background: radial-gradient(circle, #dc2626, #b91c1c);
+    border-radius: 50%;
+    border: 2px solid #991b1b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.logo-right::before {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="none" stroke="white" stroke-width="4"/><text x="50" y="60" text-anchor="middle" fill="white" font-size="24" font-weight="bold">M</text></svg>');
+    background-size: contain;
+}
+
+.nav-bar {
+    background: linear-gradient(to bottom, #ffb3a0, #ff9980);
+    padding: 5px 20px;
+    border-bottom: 1px solid #e6806b;
+    text-align: center;
+    font-size: 11px;
+}
+
+.nav-bar a {
+    color: #333;
+    text-decoration: none;
+    margin: 0 8px;
+    border-bottom: 1px solid #333;
+}
+
+.content {
+    background: linear-gradient(to bottom, #ffb3a0, #ff9980);
+    padding: 25px 30px;
+}
+
+.section {
+    margin-bottom: 25px;
+}
+
+.section:last-child {
+    margin-bottom: 0;
+}
+
+.section h2 {
+    margin: 0 0 12px 0;
+    font-size: 16px;
+    color: #333;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.intro-text {
+    font-size: 13px;
+    line-height: 1.4;
+    color: #333;
+    font-style: italic;
+}
+
+.calculator-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.calculator-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.calc-icon {
+    width: 16px;
+    height: 12px;
+    background: linear-gradient(145deg, #22c55e, #16a34a);
+    border: 1px solid #15803d;
+    margin-right: 8px;
+    border-radius: 1px;
+}
+
+.calculator-item a {
+    color: #b45309;
+    text-decoration: underline;
+    font-size: 13px;
+    font-style: italic;
+}
+
+.calculator-item a:hover {
+    color: #92400e;
+}
+
+.footer {
+    background: linear-gradient(to bottom, #ffb3a0, #ff9980);
+    text-align: center;
+    padding: 8px;
+    font-size: 11px;
+    color: #333;
+    border-top: 1px solid #e6806b;
+}

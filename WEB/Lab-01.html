@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me - Ahmed Mohamed</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        .profile-section {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .profile-images {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .profile-img {
+            width: 200px;
+            height: 200px;
+            border-radius: 10px;
+            border: 3px solid #3498db;
+            object-fit: cover;
+        }
+        .profile-content {
+            flex: 1;
+            min-width: 300px;
+        }
+        .intro-paragraph {
+            background: #ecf0f1;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin-bottom: 20px;
+            border-radius: 0 5px 5px 0;
+        }
+        .highlight {
+            background: #f39c12;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        .interests-list {
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .interests-list ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .interests-list li {
+            margin-bottom: 8px;
+        }
+        .validators {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ffc107;
+            margin-top: 30px;
+            text-align: center;
+        }
+        .validator-links {
+            margin-top: 10px;
+        }
+        .validator-links a {
+            display: inline-block;
+            margin: 5px 10px;
+            padding: 8px 15px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .validator-links a:hover {
+            background: #0056b3;
+        }
+        .fun-fact {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        @media (max-width: 600px) {
+            .profile-section {
+                flex-direction: column;
+                align-items: center;
+            }
+            .profile-images {
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>About Me</h1>
+        
+        <div class="profile-section">
+            <div class="profile-images">
+                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=face" alt="Alaa Rehab - Happy" class="profile-img">
+                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&crop=face" alt="Alaa Rehab - Professional" class="profile-img">
+            </div>
+            
+            <div class="profile-content">
+                <div class="intro-paragraph">
+                    <p>Hello! My name is <strong>Alaa Mohamed</strong>, and I'm a passionate Ai & Data science , web developer and computer science student from Tanta, Egypt. Welcome to my personal "About Me" page!</p>
+                </div>
+                
+                <p>I am a 20-year-old Computer Science student at Tanta University, currently in my final year. I have a deep passion for technology, problem-solving, and creating innovative solutions that make people's lives easier.</p>
+                
+                <p>What drives me every day is the opportunity to <span class="highlight">learn something new</span> and apply that knowledge to build meaningful projects. Whether it's mastering a new programming language or understanding complex algorithms, I believe continuous learning is the key to success in the tech industry.</p>
+            </div>
+        </div>
+
+        <h2>A Bit More About Me</h2>
+        
+        <p>I grew up in a family that encouraged curiosity and creativity. My journey into programming started when I was 17 years old, when I first discovered basics computer science. Since then, I've expanded my skills to include JavaScript, Python, Java, and various web frameworks.</p>
+        
+        <p>Beyond coding, I'm someone who values <strong>teamwork</strong>, <strong>innovation</strong>, and <strong>continuous improvement</strong>. I believe that the best solutions come from collaborative efforts and diverse perspectives.</p>
+
+        <div class="fun-fact">
+            <h3>🎯 Fun Fact About Me</h3>
+            <p>I can solve a Rubik's cube in under 2 minutes, and I believe this skill has actually helped me become a better programmer - both require pattern recognition, patience, and systematic problem-solving!</p>
+        </div>
+
+        <div class="interests-list">
+            <h2>My Interests & Hobbies</h2>
+            <p>When I'm not coding or studying, you can find me:</p>
+            <ul>
+                <li><strong>Reading tech blogs and books</strong> - I love staying updated with the latest trends in technology</li>
+                <li><strong>Photography</strong> - Capturing beautiful moments and experimenting with different perspectives</li>
+                <li><strong>Volunteering</strong> - Teaching basic computer skills to children in my community</li>
+                <li><strong>Gaming</strong> - Especially strategy games that challenge my problem-solving skills</li>
+                <li><strong>Cooking</strong> - I find it relaxing and creative, plus it's a great way to experiment!</li>
+            </ul>
+        </div>
+
+        <h2>My Favorite Quote</h2>
+        <blockquote style="font-style: italic; font-size: 1.1em; color: #555; border-left: 4px solid #3498db; padding-left: 20px; margin: 20px 0;">
+            "The only way to make sense out of change is to plunge into it, move with it, and join the dance." - Alan Watts
+        </blockquote>
+        
+        <h2>What Makes Me Unique</h2>
+        <p>I believe what sets me apart is my ability to bridge the gap between technical complexity and user-friendly solutions. I don't just want to write code that works - I want to create experiences that people genuinely enjoy using.</p>
+        
+        <p>I'm also deeply interested in the intersection of technology and social impact. I'm working on several personal projects aimed at solving real-world problems in education and accessibility.</p>
+
+        <h2>Looking Forward</h2>
+        <p>As I prepare to graduate and enter the professional world, I'm excited about the possibilities ahead. My goal is to work with a team of passionate individuals where I can contribute to meaningful projects while continuing to grow and learn.</p>
+        
+        <p>I'm particularly interested in full-stack web development, mobile app development, and artificial intelligence. I believe these fields will shape the future, and I want to be part of that transformation.</p>
+
+        <div class="validators">
+            <h3>Page Validation</h3>
+            <p>This page has been validated for proper HTML and CSS standards:</p>
+            <div class="validator-links">
+                <a href="https://validator.w3.org/nu/?doc=http://validator.w3.org/check/referer" target="_blank">
+                    <img src="https://www.w3.org/Icons/valid-xhtml11" alt="Valid XHTML 1.1" height="31" width="80">
+                </a>
+                <a href="https://jigsaw.w3.org/css-validator/check/referer" target="_blank">
+                    <img src="https://jigsaw.w3.org/css-validator/images/vcss" alt="Valid CSS" height="31" width="80">
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

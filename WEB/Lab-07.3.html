@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do Organizer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .title {
+            text-align: center;
+            color: #8B4513;
+            font-size: 32px;
+            font-weight: normal;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .input-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .task-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .task-input:focus {
+            border-color: #4CAF50;
+        }
+
+        .add-btn {
+            padding: 12px 25px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-btn:hover {
+            background: #5a6268;
+        }
+
+        .add-btn:active {
+            background: #545b62;
+        }
+
+        .task-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .task-table th {
+            background: #dc3545;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .task-table th:first-child {
+            width: 15%;
+        }
+
+        .task-table th:nth-child(2) {
+            width: 65%;
+        }
+
+        .task-table th:last-child {
+            width: 20%;
+        }
+
+        .task-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            vertical-align: middle;
+        }
+
+        .task-row {
+            background: white;
+            transition: background-color 0.3s ease;
+        }
+
+        .task-row:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .task-row.completed {
+            background: #e8e8e8;
+        }
+
+        .task-row.completed .task-text {
+            text-decoration: line-through;
+            color: #6c757d;
+            opacity: 0.7;
+        }
+
+        .task-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            transform: scale(1.2);
+        }
+
+        .task-text {
+            font-size: 16px;
+            text-align: left;
+            padding-left: 10px;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 3px;
+            transition: background-color 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            background: #f8d7da;
+        }
+
+        .delete-icon {
+            width: 20px;
+            height: 20px;
+            fill: #dc3545;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+            padding: 40px;
+            background: #f8f9fa;
+        }
+
+        /* Modal styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            min-width: 350px;
+            animation: slideIn 0.3s ease;
+        }
+
+        .modal-header {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .modal-body {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-ok {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-ok:hover {
+            background: #0056b3;
+        }
+
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background: #545b62;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translate(-50%, -60%); opacity: 0; }
+            to { transform: translate(-50%, -50%); opacity: 1; }
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            color: #495057;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">To Do Organizer</h1>
+        
+        <div class="input-section">
+            <input type="text" class="task-input" id="taskInput" placeholder="Enter Task Name" maxlength="100">
+            <button class="add-btn" onclick="addTask()">Add</button>
+        </div>
+
+        <div class="stats" id="stats">
+            <span>Total Tasks: <strong id="totalTasks">0</strong></span>
+            <span>Completed: <strong id="completedTasks">0</strong></span>
+            <span>Remaining: <strong id="remainingTasks">0</strong></span>
+        </div>
+
+        <table class="task-table">
+            <thead>
+                <tr>
+                    <th>Done</th>
+                    <th>Task</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody id="taskList">
+                <tr class="empty-state">
+                    <td colspan="3">No tasks added yet. Add your first task above!</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal">
+            <div class="modal-header">This page says</div>
+            <div class="modal-body">R U Sure to delete this task</div>
+            <div class="modal-buttons">
+                <button class="modal-btn btn-ok" onclick="confirmDelete()">OK</button>
+                <button class="modal-btn btn-cancel" onclick="cancelDelete()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let tasks = [];
+        let taskIdCounter = 1;
+        let taskToDelete = null;
+
+        function initializeSampleTasks() {
+            const sampleTasks = [
+                { id: 1, text: 'Study Js Course', completed: false },
+                { id: 2, text: 'Practise JS More', completed: false },
+                { id: 3, text: 'Go to Gym', completed: false }
+            ];
+            
+            tasks = sampleTasks;
+            taskIdCounter = 4;
+            renderTasks();
+            updateStats();
+        }
+
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            const taskText = taskInput.value.trim();
+            
+            if (taskText === '') {
+                alert('Please enter a task name!');
+                return;
+            }
+
+            if (tasks.some(task => task.text.toLowerCase() === taskText.toLowerCase())) {
+                alert('This task already exists!');
+                return;
+            }
+            
+            const newTask = {
+                id: taskIdCounter++,
+                text: taskText,
+                completed: false
+            };
+            
+            tasks.push(newTask);
+            taskInput.value = '';
+            renderTasks();
+            updateStats();
+
+            taskInput.focus();
+        }
+
+        function renderTasks() {
+            const taskList = document.getElementById('taskList');
+            
+            if (tasks.length === 0) {
+                taskList.innerHTML = `
+                    <tr class="empty-state">
+                        <td colspan="3">No tasks added yet. Add your first task above!</td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            taskList.innerHTML = tasks.map(task => `
+                <tr class="task-row ${task.completed ? 'completed' : ''}">
+                    <td>
+                        <input type="checkbox" class="task-checkbox" 
+                               ${task.completed ? 'checked' : ''} 
+                               onchange="toggleTask(${task.id})">
+                    </td>
+                    <td class="task-text">${task.text}</td>
+                    <td>
+                        <button class="delete-btn" onclick="showDeleteModal(${task.id})" title="Delete task">
+                            <svg class="delete-icon" viewBox="0 0 24 24">
+                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                            </svg>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function toggleTask(taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            if (task) {
+                task.completed = !task.completed;
+                renderTasks();
+                updateStats();
+            }
+        }
+
+        function showDeleteModal(taskId) {
+            taskToDelete = taskId;
+            document.getElementById('deleteModal').style.display = 'block';
+        }
+
+        function confirmDelete() {
+            if (taskToDelete !== null) {
+                tasks = tasks.filter(task => task.id !== taskToDelete);
+                renderTasks();
+                updateStats();
+                taskToDelete = null;
+            }
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+
+        function cancelDelete() {
+            taskToDelete = null;
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+
+        function updateStats() {
+            const total = tasks.length;
+            const completed = tasks.filter(task => task.completed).length;
+            const remaining = total - completed;
+            
+            document.getElementById('totalTasks').textContent = total;
+            document.getElementById('completedTasks').textContent = completed;
+            document.getElementById('remainingTasks').textContent = remaining;
+        }
+
+        document.getElementById('taskInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addTask();
+            }
+        });
+
+        document.getElementById('deleteModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                cancelDelete();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                cancelDelete();
+            }
+        });
+
+        initializeSampleTasks();
+    </script>
+</body>
+</html>

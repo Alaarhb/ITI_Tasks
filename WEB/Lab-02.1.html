@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab2 HTML Layout</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .main-table {
+            border: 2px solid #000;
+            border-collapse: collapse;
+            width: 600px;
+            background-color: white;
+        }
+        
+        .main-table td {
+            border: 1px solid #000;
+            padding: 15px;
+            vertical-align: top;
+        }
+        
+        .about-section {
+            width: 60%;
+        }
+        
+        .right-section {
+            width: 40%;
+        }
+        
+        .names-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+        
+        .names-table th {
+            background-color: #f0f0f0;
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .names-table td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: center;
+        }
+        
+        .contact-box {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: center;
+            background-color: #f0f0f0;
+            margin-bottom: 10px;
+        }
+        
+        .hello-box {
+            border: 1px solid #000;
+            padding: 20px;
+            min-height: 60px;
+        }
+        
+        .software-section {
+            width: 60%;
+        }
+        
+        .software-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .software-list {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .software-list li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <table class="main-table">
+        <tr>
+            <td class="about-section">
+                <p>This is a paragraph about me, Ian!</p>
+                <p>This is another paragraph about me, Ian!</p>
+            </td>
+            <td class="right-section">
+                <table class="names-table">
+                    <tr>
+                        <th colspan="2">Random Names</th>
+                    </tr>
+                    <tr>
+                        <td>J. Doe</td>
+                        <td>P. Day</td>
+                    </tr>
+                    <tr>
+                        <td>R. Bob</td>
+                        <td>T. Sam</td>
+                    </tr>
+                </table>
+                
+                <div class="contact-box">
+                    Contact me for details
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="software-section">
+                <div class="software-title">Free Software</div>
+                <ol class="software-list">
+                    <li>Linux</li>
+                    <li>Apache</li>
+                    <li>MySQL</li>
+                    <li>PHP</li>
+                </ol>
+            </td>
+            <td class="hello-box">
+                HELLO
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

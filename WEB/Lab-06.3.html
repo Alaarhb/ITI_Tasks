@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Today's Date and Day</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: white;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 3px solid #ff0000;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            min-width: 400px;
+        }
+
+        .title {
+            background-color: #ff0000;
+            color: white;
+            padding: 15px;
+            margin: -40px -40px 30px -40px;
+            font-weight: bold;
+            font-size: 18px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .day-name {
+            font-size: 72px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin: 20px 0;
+            animation: pulse 2s ease-in-out infinite alternate;
+        }
+
+        .full-date {
+            font-size: 32px;
+            color: #f0f0f0;
+            margin: 20px 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .time-display {
+            font-size: 24px;
+            color: #e0e0e0;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .additional-info {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .info-item {
+            margin: 8px 0;
+            font-size: 16px;
+        }
+
+        .refresh-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .refresh-btn:hover {
+            background-color: #218838;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        .digital-clock {
+            background-color: #000;
+            color: #00ff00;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 20px;
+            margin: 10px 0;
+            border: 2px solid #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Show today date and show the Day Name on screen</div>
+        
+        <div class="day-name" id="dayName">SATURDAY</div>
+        
+        <div class="full-date" id="fullDate">August 30, 2025</div>
+        
+        <div class="digital-clock" id="digitalClock">00:00:00</div>
+        
+        <div class="additional-info">
+            <div class="info-item"><strong>Day of Year:</strong> <span id="dayOfYear">242</span></div>
+            <div class="info-item"><strong>Week Number:</strong> <span id="weekNumber">35</span></div>
+            <div class="info-item"><strong>Days Until New Year:</strong> <span id="daysUntilNewYear">123</span></div>
+            <div class="info-item"><strong>Month Progress:</strong> <span id="monthProgress">96.8%</span></div>
+        </div>
+
+        <button class="refresh-btn" onclick="updateDateTime()">Refresh Date & Time</button>
+    </div>
+
+    <script>
+        function updateDateTime() {
+            const now = new Date();
+            
+            const dayNames = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                              'July', 'August', 'September', 'October', 'November', 'December'];
+            
+            document.getElementById('dayName').textContent = dayNames[now.getDay()];
+            
+            const fullDate = `${monthNames[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
+            document.getElementById('fullDate').textContent = fullDate;
+            
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            document.getElementById('digitalClock').textContent = `${hours}:${minutes}:${seconds}`;
+            
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start;
+            const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById('dayOfYear').textContent = dayOfYear;
+            
+            const onejan = new Date(now.getFullYear(), 0, 1);
+            const weekNumber = Math.ceil((((now - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+            document.getElementById('weekNumber').textContent = weekNumber;
+            
+            const newYear = new Date(now.getFullYear() + 1, 0, 1);
+            const daysUntilNewYear = Math.ceil((newYear - now) / (1000 * 60 * 60 * 24));
+            document.getElementById('daysUntilNewYear').textContent = daysUntilNewYear;
+            
+            const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+            const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+            const monthProgress = ((now.getDate() - 1) / monthEnd.getDate() * 100).toFixed(1);
+            document.getElementById('monthProgress').textContent = monthProgress + '%';
+        }
+
+        function startClock() {
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+        }
+
+        window.onload = startClock;
+    </script>
+</body>
+</html>

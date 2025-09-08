@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+        
+        .team-container {
+            max-width: 750px;
+            margin: 0 auto;
+            border: 2px solid #333;
+            background-color: white;
+        }
+        
+        .header {
+            background-color: #5b85c7;
+            color: white;
+            display: flex;
+            font-weight: bold;
+        }
+        
+        .header-cell {
+            padding: 12px;
+            border-right: 1px solid #fff;
+            text-align: center;
+        }
+        
+        .header-cell:last-child {
+            border-right: none;
+        }
+        
+        .team-name-header { flex: 2; }
+        .start-date-header { flex: 1.5; }
+        .end-date-header { flex: 1.5; }
+        .roster-header { flex: 1; }
+        
+        .action-section {
+            background-color: #e6e6e6;
+            padding: 8px 12px;
+            font-style: italic;
+            color: #666;
+            text-align: center;
+            border-bottom: 1px solid #ccc;
+        }
+        
+        .action-link {
+            color: #5b85c7;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        
+        .team-row {
+            display: flex;
+            border-bottom: 1px solid #ccc;
+            background-color: #f8f9fa;
+        }
+        
+        .team-row:hover {
+            background-color: #e9ecef;
+        }
+        
+        .row-cell {
+            padding: 10px 8px;
+            border-right: 1px solid #ccc;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .row-cell:last-child {
+            border-right: none;
+        }
+        
+        .edit-cell { 
+            flex: 0.5;
+            background-color: #d6d6d6;
+        }
+        
+        .team-name-cell { 
+            flex: 2;
+            background-color: #b8c5d6;
+            font-weight: bold;
+        }
+        
+        .start-date-cell { flex: 1.5; }
+        .end-date-cell { flex: 1.5; }
+        .roster-cell { flex: 1; }
+        
+        .delete-cell { 
+            flex: 0.5;
+            background-color: #d6d6d6;
+        }
+        
+        .edit-link, .delete-link {
+            color: #999;
+            text-decoration: underline;
+            cursor: pointer;
+            font-style: italic;
+            font-size: 12px;
+        }
+        
+        .edit-link:hover, .delete-link:hover {
+            color: #666;
+        }
+        
+        .ongoing {
+            color: #333;
+        }
+        
+        .roster-yes {
+            color: #333;
+        }
+        
+        .roster-no {
+            color: #333;
+        }
+        
+        .info-section {
+            background-color: #e6e6e6;
+            padding: 8px 12px;
+            font-style: italic;
+            color: #666;
+            text-align: center;
+            font-size: 13px;
+        }
+        
+        .add-team-link {
+            color: #5b85c7;
+            text-decoration: underline;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="team-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-cell team-name-header">Team Name</div>
+            <div class="header-cell start-date-header">Start Date</div>
+            <div class="header-cell end-date-header">End Date</div>
+            <div class="header-cell roster-header">Show on Roster</div>
+        </div>
+        
+        <!-- Move to another Team action -->
+        <div class="action-section">
+            <span class="action-link">Move to another Team</span>
+        </div>
+        
+        <!-- Team A Row -->
+        <div class="team-row">
+            <div class="row-cell edit-cell">
+                <span class="edit-link">edit</span>
+            </div>
+            <div class="row-cell team-name-cell">Team A</div>
+            <div class="row-cell start-date-cell">19/01/2012</div>
+            <div class="row-cell end-date-cell ongoing">Ongoing</div>
+            <div class="row-cell roster-cell roster-yes">yes</div>
+            <div class="row-cell delete-cell">
+                <span class="delete-link">delete</span>
+            </div>
+        </div>
+        
+        <!-- Team B Row -->
+        <div class="team-row">
+            <div class="row-cell edit-cell">
+                <span class="edit-link">edit</span>
+            </div>
+            <div class="row-cell team-name-cell">Team B</div>
+            <div class="row-cell start-date-cell">24/10/2011</div>
+            <div class="row-cell end-date-cell">18/01/2012</div>
+            <div class="row-cell roster-cell roster-no">no</div>
+            <div class="row-cell delete-cell">
+                <span class="delete-link">delete</span>
+            </div>
+        </div>
+        
+        <!-- Gap period info -->
+        <div class="info-section">
+            Not in a team between 12/08/2011 and 23/10/2011. 
+            <span class="add-team-link">Add to a Team</span>
+        </div>
+        
+        <!-- Team B Earlier Row -->
+        <div class="team-row">
+            <div class="row-cell edit-cell">
+                <span class="edit-link">edit</span>
+            </div>
+            <div class="row-cell team-name-cell">Team B</div>
+            <div class="row-cell start-date-cell">1/01/2011</div>
+            <div class="row-cell end-date-cell">11/08/2011</div>
+            <div class="row-cell roster-cell roster-yes">yes</div>
+            <div class="row-cell delete-cell">
+                <span class="delete-link">delete</span>
+            </div>
+        </div>
+        
+        <!-- Add to team prior action -->
+        <div class="action-section">
+            <span class="action-link">Add to a team prior to 01/01/2011</span>
+        </div>
+    </div>
+</body>
+</html>

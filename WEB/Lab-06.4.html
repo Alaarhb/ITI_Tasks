@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Grades Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            border: 3px solid #ff0000;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .title {
+            background-color: #ff0000;
+            color: white;
+            padding: 15px;
+            margin: -30px -30px 25px -30px;
+            font-weight: bold;
+            font-size: 16px;
+            border-radius: 7px 7px 0 0;
+            text-align: center;
+        }
+
+        .array-definition {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            border: 2px solid #333;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        th {
+            background-color: #ffff99;
+            color: #000;
+            font-size: 16px;
+        }
+
+        td {
+            font-size: 18px;
+        }
+
+        .student-row {
+            background-color: #f9f9f9;
+        }
+
+        .student-row:nth-child(even) {
+            background-color: #ffffff;
+        }
+
+        .sum-row {
+            background-color: #ffff99;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .sum-row td {
+            font-size: 20px;
+            color: #d63384;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 25px 0 10px 0;
+            color: #333;
+        }
+
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .btn {
+            background-color: #007acc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #005999;
+        }
+
+        .stats {
+            background-color: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .stats h3 {
+            margin-top: 0;
+            color: #0066cc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Define 2 dimensions array contains students grades in courses then Display it in table, and show Sum of Grades for each course as follow</div>
+        
+        <div class="section-title">2D Array Definition:</div>
+        <div class="array-definition" id="arrayDefinition">
+// 2D Array: grades[student][course]
+var grades = [
+    [1, 2, 3],  // Student 1: ST1=1, ST2=2, ST3=3
+    [4, 5, 6]   // Student 2: ST1=4, ST2=5, ST3=6
+];
+        </div>
+
+        <div class="section-title">Grades Table:</div>
+        <table id="gradesTable">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>ST1</th>
+                    <th>ST2</th>
+                    <th>ST3</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Table content will be generated here -->
+            </tbody>
+        </table>
+
+        <div class="controls">
+            <button class="btn" onclick="addRandomStudent()">Add Random Student</button>
+            <button class="btn" onclick="resetTable()">Reset to Original</button>
+            <button class="btn" onclick="addCourse()">Add Course</button>
+        </div>
+
+        <div class="stats" id="statsSection">
+            <h3>Course Statistics:</h3>
+            <div id="courseStats"></div>
+        </div>
+    </div>
+
+    <script>
+        // Define the 2D array with student grades
+        let grades = [
+            [1, 2, 3],  // Student 1
+            [4, 5, 6]   // Student 2
+        ];
+        
+        let courseNames = ['ST1', 'ST2', 'ST3'];
+
+        function displayTable() {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+
+            // Add student rows
+            for (let i = 0; i < grades.length; i++) {
+                const row = document.createElement('tr');
+                row.className = 'student-row';
+                
+                // Student name
+                const studentCell = document.createElement('td');
+                studentCell.textContent = `Student ${i + 1}`;
+                row.appendChild(studentCell);
+                
+                // Grade cells
+                let studentTotal = 0;
+                for (let j = 0; j < grades[i].length; j++) {
+                    const gradeCell = document.createElement('td');
+                    gradeCell.textContent = grades[i][j];
+                    studentTotal += grades[i][j];
+                    row.appendChild(gradeCell);
+                }
+                
+                // Student total
+                const totalCell = document.createElement('td');
+                totalCell.textContent = studentTotal;
+                totalCell.style.backgroundColor = '#e3f2fd';
+                totalCell.style.fontWeight = 'bold';
+                row.appendChild(totalCell);
+                
+                tableBody.appendChild(row);
+            }
+
+            // Add sum row
+            const sumRow = document.createElement('tr');
+            sumRow.className = 'sum-row';
+            
+            const sumLabelCell = document.createElement('td');
+            sumLabelCell.textContent = 'Sum of Grades';
+            sumLabelCell.style.fontWeight = 'bold';
+            sumRow.appendChild(sumLabelCell);
+            
+            // Calculate sum for each course
+            let grandTotal = 0;
+            for (let courseIndex = 0; courseIndex < courseNames.length; courseIndex++) {
+                const courseSum = grades.reduce((sum, student) => sum + (student[courseIndex] || 0), 0);
+                const sumCell = document.createElement('td');
+                sumCell.textContent = courseSum;
+                grandTotal += courseSum;
+                sumRow.appendChild(sumCell);
+            }
+            
+            // Grand total
+            const grandTotalCell = document.createElement('td');
+            grandTotalCell.textContent = grandTotal;
+            grandTotalCell.style.backgroundColor = '#ffcccc';
+            sumRow.appendChild(grandTotalCell);
+            
+            tableBody.appendChild(sumRow);
+            
+            updateStats();
+        }
+
+        function updateStats() {
+            const statsDiv = document.getElementById('courseStats');
+            let statsHTML = '';
+            
+            for (let i = 0; i < courseNames.length; i++) {
+                const courseSum = grades.reduce((sum, student) => sum + (student[i] || 0), 0);
+                const courseAvg = (courseSum / grades.length).toFixed(2);
+                const courseMax = Math.max(...grades.map(student => student[i] || 0));
+                const courseMin = Math.min(...grades.map(student => student[i] || 0));
+                
+                statsHTML += `
+                    <div style="margin: 10px 0; padding: 10px; background-color: rgba(255,255,255,0.7); border-radius: 5px;">
+                        <strong>${courseNames[i]}:</strong> 
+                        Sum = ${courseSum}, 
+                        Average = ${courseAvg}, 
+                        Max = ${courseMax}, 
+                        Min = ${courseMin}
+                    </div>
+                `;
+            }
+            
+            statsDiv.innerHTML = statsHTML;
+        }
+
+        function updateArrayDefinition() {
+            const arrayDef = document.getElementById('arrayDefinition');
+            let arrayString = '// 2D Array: grades[student][course]\nvar grades = [\n';
+            
+            for (let i = 0; i < grades.length; i++) {
+                arrayString += '    [' + grades[i].join(', ') + ']';
+                if (i < grades.length - 1) arrayString += ',';
+                arrayString += '  // Student ' + (i + 1) + ': ';
+                for (let j = 0; j < grades[i].length; j++) {
+                    arrayString += courseNames[j] + '=' + grades[i][j];
+                    if (j < grades[i].length - 1) arrayString += ', ';
+                }
+                arrayString += '\n';
+            }
+            arrayString += '];';
+            
+            arrayDef.textContent = arrayString;
+        }
+
+        function addRandomStudent() {
+            const newStudent = [];
+            for (let i = 0; i < courseNames.length; i++) {
+                newStudent.push(Math.floor(Math.random() * 10) + 1); // Random grade 1-10
+            }
+            grades.push(newStudent);
+            displayTable();
+            updateArrayDefinition();
+        }
+
+        function resetTable() {
+            grades = [
+                [1, 2, 3],
+                [4, 5, 6]
+            ];
+            courseNames = ['ST1', 'ST2', 'ST3'];
+            updateTableHeaders();
+            displayTable();
+            updateArrayDefinition();
+        }
+
+        function addCourse() {
+            const courseNumber = courseNames.length + 1;
+            courseNames.push(`ST${courseNumber}`);
+            
+            for (let i = 0; i < grades.length; i++) {
+                grades[i].push(Math.floor(Math.random() * 10) + 1);
+            }
+            
+            updateTableHeaders();
+            displayTable();
+            updateArrayDefinition();
+        }
+
+        function updateTableHeaders() {
+            const headerRow = document.querySelector('#gradesTable thead tr');
+            headerRow.innerHTML = '<th>Student</th>';
+            
+            for (let courseName of courseNames) {
+                headerRow.innerHTML += `<th>${courseName}</th>`;
+            }
+            headerRow.innerHTML += '<th>Total</th>';
+        }
+
+        window.onload = function() {
+            displayTable();
+            updateArrayDefinition();
+        };
+    </script>
+</body>
+</html>

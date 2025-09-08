@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array Operations Program</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border: 3px solid #ff0000;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .header {
+            background-color: #ff0000;
+            color: white;
+            padding: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .step {
+            margin: 25px 0;
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+        }
+
+        .step.active {
+            border-color: #007acc;
+            background-color: #e7f3ff;
+        }
+
+        .step h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 16px;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+            margin: 10px 0;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #007acc;
+            box-shadow: 0 0 5px rgba(0, 122, 204, 0.3);
+        }
+
+        .btn {
+            background-color: #007acc;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #005999;
+        }
+
+        .option-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .option-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 8px;
+            text-align: left;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .option-btn:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        .option-btn:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result {
+            background-color: #d4edda;
+            border: 2px solid #28a745;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .array-display {
+            background-color: #f1f3f4;
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 16px;
+            margin: 10px 0;
+            word-wrap: break-word;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .discount-highlight {
+            color: #00ff00;
+            font-weight: bold;
+            background-color: #000;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        .info {
+            background-color: #cce5ff;
+            border: 1px solid #66b3ff;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            6.2 - Array Operations Program
+        </div>
+
+        <div class="content">
+            <div class="step active" id="step1">
+                <h3>Step 1: Enter Array of Numbers</h3>
+                <div class="info">Enter numbers separated by commas (e.g., 10,20,30,40,50)</div>
+                <input type="text" id="arrayInput" placeholder="e.g., 10,20,30,40,50" value="10,20,30,40,50">
+                <button class="btn" onclick="processArray()">Process Array</button>
+                <div id="arrayError" class="error hidden"></div>
+            </div>
+
+            <div class="step hidden" id="step2">
+                <h3>Step 2: Your Array</h3>
+                <div class="array-display" id="originalArray"></div>
+                <div><strong>Array Size:</strong> <span id="arraySize"></span></div>
+                <button class="btn" onclick="showOptions()">Continue to Operations</button>
+            </div>
+
+            <div class="step hidden" id="step3">
+                <h3>Step 3: Choose Operation</h3>
+                <div class="option-buttons">
+                    <button class="option-btn" onclick="executeOperation('a')">
+                        <strong>a:</strong> Display array with same receiving order
+                    </button>
+                    <button class="option-btn" onclick="executeOperation('b')">
+                        <strong>b:</strong> Display array with ascending order
+                    </button>
+                    <button class="option-btn" onclick="executeOperation('c')">
+                        <strong>c:</strong> Display array with descending order
+                    </button>
+                    <button class="option-btn" onclick="executeOperation('d')">
+                        <strong>d:</strong> Display reversed version of original array
+                    </button>
+                    <button class="option-btn" onclick="executeOperation('e')">
+                        <strong>e:</strong> Display even numbers only
+                    </button>
+                    <button class="option-btn" onclick="executeOperation('f')">
+                        <strong>f:</strong> Find numbers divisible by a number
+                    </button>
+                    <button class="option-btn" onclick="executeOperation('g')">
+                        <strong>g:</strong> <span class="discount-highlight">Display array with 30% discount</span>
+                    </button>
+                    <button class="option-btn" onclick="executeOperation('h')">
+                        <strong>h:</strong> Display string representation (*** format)
+                    </button>
+                </div>
+            </div>
+
+            <div class="step hidden" id="step4f">
+                <h3>Enter Divisor Number</h3>
+                <input type="number" id="divisorInput" placeholder="Enter a number">
+                <button class="btn" onclick="findDivisible()">Find Divisible Numbers</button>
+            </div>
+
+            <div class="step hidden" id="results">
+                <h3>Results</h3>
+                <div id="operationResult"></div>
+                <button class="btn" onclick="backToOptions()">Back to Operations</button>
+                <button class="btn" onclick="startOver()">Start Over</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let originalArray = [];
+        let currentOperation = '';
+
+        function processArray() {
+            const input = document.getElementById('arrayInput').value.trim();
+            const errorDiv = document.getElementById('arrayError');
+            
+            errorDiv.classList.add('hidden');
+            
+            if (!input) {
+                showError('Please enter some numbers!');
+                return;
+            }
+
+            try {
+                // Parse the input
+                const stringArray = input.split(',').map(s => s.trim());
+                const numberArray = stringArray.map(s => {
+                    const num = parseFloat(s);
+                    if (isNaN(num)) {
+                        throw new Error(`"${s}" is not a valid number`);
+                    }
+                    return num;
+                });
+
+                originalArray = numberArray;
+                
+                // Show array
+                document.getElementById('originalArray').textContent = '[' + originalArray.join(', ') + ']';
+                document.getElementById('arraySize').textContent = originalArray.length;
+                
+                // Move to step 2
+                hideAllSteps();
+                document.getElementById('step2').classList.remove('hidden');
+                
+            } catch (error) {
+                showError('Error: ' + error.message);
+            }
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('arrayError');
+            errorDiv.textContent = message;
+            errorDiv.classList.remove('hidden');
+        }
+
+        function hideAllSteps() {
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.add('hidden');
+                step.classList.remove('active');
+            });
+        }
+
+        function showOptions() {
+            hideAllSteps();
+            document.getElementById('step3').classList.remove('hidden');
+            document.getElementById('step3').classList.add('active');
+        }
+
+        function executeOperation(operation) {
+            currentOperation = operation;
+            
+            if (operation === 'f') {
+                hideAllSteps();
+                document.getElementById('step4f').classList.remove('hidden');
+                document.getElementById('step4f').classList.add('active');
+                document.getElementById('divisorInput').focus();
+                return;
+            }
+            
+            let result = '';
+            let resultArray = [];
+            
+            switch (operation) {
+                case 'a':
+                    resultArray = [...originalArray];
+                    result = `<div class="result">
+                        <strong>a: Array with same receiving order</strong><br>
+                        <div class="array-display">[${resultArray.join(', ')}]</div>
+                    </div>`;
+                    break;
+                    
+                case 'b':
+                    resultArray = [...originalArray].sort((a, b) => a - b);
+                    result = `<div class="result">
+                        <strong>b: Array with ascending order</strong><br>
+                        <div class="array-display">[${resultArray.join(', ')}]</div>
+                    </div>`;
+                    break;
+                    
+                case 'c':
+                    resultArray = [...originalArray].sort((a, b) => b - a);
+                    result = `<div class="result">
+                        <strong>c: Array with descending order</strong><br>
+                        <div class="array-display">[${resultArray.join(', ')}]</div>
+                    </div>`;
+                    break;
+                    
+                case 'd':
+                    resultArray = [...originalArray].reverse();
+                    result = `<div class="result">
+                        <strong>d: Reversed version of original array</strong><br>
+                        <div class="array-display">[${resultArray.join(', ')}]</div>
+                    </div>`;
+                    break;
+                    
+                case 'e':
+                    resultArray = originalArray.filter(num => num % 2 === 0);
+                    if (resultArray.length === 0) {
+                        result = `<div class="error">
+                            <strong>e: Even numbers only</strong><br>
+                            Alert: No even numbers found in the array!
+                        </div>`;
+                    } else {
+                        result = `<div class="result">
+                            <strong>e: Even numbers only</strong><br>
+                            <div class="array-display">[${resultArray.join(', ')}]</div>
+                        </div>`;
+                    }
+                    break;
+                    
+                case 'g':
+                    resultArray = originalArray.map(num => (num * 0.7).toFixed(2));
+                    result = `<div class="result">
+                        <strong>g: <span class="discount-highlight">Array with 30% discount (70% of original values)</span></strong><br>
+                        <div class="array-display">[${resultArray.join(', ')}]</div>
+                        <div style="margin-top: 10px; font-size: 14px;">
+                            Original: [${originalArray.join(', ')}]<br>
+                            After 30% discount: [${resultArray.join(', ')}]
+                        </div>
+                    </div>`;
+                    break;
+                    
+                case 'h':
+                    const stringRepresentation = originalArray.map(num => '*'.repeat(Math.abs(Math.floor(num)))).join(' *** ');
+                    result = `<div class="result">
+                        <strong>h: String representation (*** format)</strong><br>
+                        <div class="array-display">${stringRepresentation}</div>
+                        <div style="margin-top: 10px; font-size: 14px;">
+                            Each number represented as stars: ${originalArray.join(' → ')} stars respectively
+                        </div>
+                    </div>`;
+                    break;
+            }
+            
+            showResult(result);
+        }
+
+        function findDivisible() {
+            const divisor = parseFloat(document.getElementById('divisorInput').value);
+            
+            if (isNaN(divisor) || divisor === 0) {
+                alert('Please enter a valid number (not zero)!');
+                return;
+            }
+            
+            const divisibleNumbers = originalArray.filter(num => num % divisor === 0);
+            
+            let result;
+            if (divisibleNumbers.length === 0) {
+                result = `<div class="error">
+                    <strong>f: Numbers divisible by ${divisor}</strong><br>
+                    Alert: No numbers in the array are divisible by ${divisor}!
+                </div>`;
+            } else {
+                result = `<div class="result">
+                    <strong>f: Numbers divisible by ${divisor}</strong><br>
+                    <div class="array-display">[${divisibleNumbers.join(', ')}]</div>
+                    <div style="margin-top: 10px; font-size: 14px;">
+                        Found ${divisibleNumbers.length} number(s) divisible by ${divisor}
+                    </div>
+                </div>`;
+            }
+            
+            showResult(result);
+        }
+
+        function showResult(resultHTML) {
+            document.getElementById('operationResult').innerHTML = resultHTML;
+            hideAllSteps();
+            document.getElementById('results').classList.remove('hidden');
+            document.getElementById('results').classList.add('active');
+        }
+
+        function backToOptions() {
+            hideAllSteps();
+            document.getElementById('step3').classList.remove('hidden');
+            document.getElementById('step3').classList.add('active');
+        }
+
+        function startOver() {
+            hideAllSteps();
+            document.getElementById('step1').classList.remove('hidden');
+            document.getElementById('step1').classList.add('active');
+            document.getElementById('arrayInput').value = '';
+            document.getElementById('divisorInput').value = '';
+            document.getElementById('operationResult').innerHTML = '';
+            originalArray = [];
+        }
+
+        document.getElementById('arrayInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                processArray();
+            }
+        });
+
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && document.getElementById('step4f').classList.contains('active')) {
+                findDivisible();
+            }
+        });
+
+        window.onload = function() {
+            document.getElementById('arrayInput').focus();
+        };
+    </script>
+</body>
+</html>

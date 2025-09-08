@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .input-field {
+            width: 200px;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-field:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+        }
+
+        .gender-section {
+            margin: 30px 0;
+        }
+
+        .gender-options {
+            display: flex;
+            gap: 40px;
+            margin-top: 15px;
+            align-items: center;
+        }
+
+        .gender-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .gender-option:hover {
+            background: #f8f9fa;
+        }
+
+        .gender-option.selected {
+            background: #e3f2fd;
+            box-shadow: 0 0 0 2px #2196f3;
+        }
+
+        .silhouette {
+            width: 120px;
+            height: 140px;
+            background: black;
+            margin-bottom: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .gender-option:hover .silhouette {
+            transform: scale(1.05);
+        }
+
+        .male-silhouette {
+            clip-path: polygon(
+                40% 0%, 60% 0%, 65% 5%, 70% 15%, 68% 25%, 65% 30%, 
+                70% 35%, 75% 45%, 78% 60%, 80% 75%, 82% 85%, 85% 95%, 85% 100%,
+                15% 100%, 15% 95%, 18% 85%, 20% 75%, 22% 60%, 25% 45%, 
+                30% 35%, 35% 30%, 32% 25%, 30% 15%, 35% 5%
+            );
+        }
+
+        .female-silhouette {
+            clip-path: polygon(
+                45% 0%, 55% 0%, 60% 5%, 62% 15%, 60% 25%, 58% 30%, 
+                65% 35%, 70% 45%, 72% 60%, 74% 75%, 76% 85%, 80% 95%, 80% 100%,
+                20% 100%, 20% 95%, 24% 85%, 26% 75%, 28% 60%, 30% 45%, 
+                35% 35%, 42% 30%, 40% 25%, 38% 15%, 40% 5%
+            );
+            position: relative;
+        }
+
+        .female-silhouette::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 60px;
+            background: black;
+            right: -15px;
+            top: 40px;
+            border-radius: 15px 15px 5px 5px;
+        }
+
+        .gender-radio {
+            margin-right: 8px;
+            transform: scale(1.2);
+            accent-color: #2196f3;
+        }
+
+        .gender-label {
+            font-size: 14px;
+            color: #555;
+            display: flex;
+            align-items: center;
+        }
+
+        .color-section {
+            margin: 30px 0;
+        }
+
+        .color-select {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .color-select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+        }
+
+        .submit-btn {
+            background: #6c757d;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .welcome-section {
+            display: none;
+            margin-top: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #28a745;
+            animation: slideDown 0.5s ease;
+        }
+
+        .welcome-message {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .welcome-silhouette {
+            width: 80px;
+            height: 100px;
+            background: black;
+            border-radius: 5px;
+        }
+
+        .welcome-text {
+            flex: 1;
+        }
+
+        .welcome-text h3 {
+            color: #28a745;
+            margin-bottom: 5px;
+            font-size: 18px;
+        }
+
+        .user-name {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .validation-error {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .form-title {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 300;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="form-title">User Profile</h2>
+        
+        <form id="profileForm">
+            <div class="form-group">
+                <label for="userName">Enter your name:</label>
+                <input type="text" id="userName" name="userName" class="input-field" placeholder="Name">
+                <div class="validation-error" id="nameError">Please enter a valid name</div>
+            </div>
+
+            <div class="form-group">
+                <label for="userAge">Enter your age:</label>
+                <input type="number" id="userAge" name="userAge" class="input-field" min="1" max="120">
+                <div class="validation-error" id="ageError">Please enter a valid age (1-120)</div>
+            </div>
+
+            <div class="form-group gender-section">
+                <label>Select your Gender:</label>
+                <div class="gender-options">
+                    <div class="gender-option" onclick="selectGender('male')">
+                        <div class="silhouette male-silhouette" id="maleSilhouette"></div>
+                        <label class="gender-label">
+                            <input type="radio" name="gender" value="male" class="gender-radio" id="maleRadio">
+                            Male
+                        </label>
+                    </div>
+                    
+                    <div class="gender-option" onclick="selectGender('female')">
+                        <div class="silhouette female-silhouette" id="femaleSilhouette"></div>
+                        <label class="gender-label">
+                            <input type="radio" name="gender" value="female" class="gender-radio" id="femaleRadio">
+                            Female
+                        </label>
+                    </div>
+                </div>
+                <div class="validation-error" id="genderError">Please select a gender</div>
+            </div>
+
+            <div class="form-group color-section">
+                <label for="favoriteColor">Select your favorite color:</label>
+                <select id="favoriteColor" name="favoriteColor" class="color-select">
+                    <option value="">Red</option>
+                    <option value="blue">Blue</option>
+                    <option value="green">Green</option>
+                    <option value="yellow">Yellow</option>
+                    <option value="purple">Purple</option>
+                    <option value="orange">Orange</option>
+                    <option value="pink">Pink</option>
+                    <option value="black">Black</option>
+                </select>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+
+        <div class="welcome-section" id="welcomeSection">
+            <div class="welcome-message">
+                <div class="welcome-silhouette" id="welcomeSilhouette"></div>
+                <div class="welcome-text">
+                    <h3>Welcome <span class="user-name" id="displayName"></span></h3>
+                    <p id="userInfo"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedGender = '';
+
+        function selectGender(gender) {
+            document.querySelectorAll('.gender-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+n
+            const selectedOption = gender === 'male' ? 
+                document.querySelector('.gender-option:first-child') : 
+                document.querySelector('.gender-option:last-child');
+            
+            selectedOption.classList.add('selected');
+
+            document.getElementById(gender + 'Radio').checked = true;
+            selectedGender = gender;
+
+            document.getElementById('genderError').style.display = 'none';
+        }
+
+        function validateForm() {
+            let isValid = true;
+            
+            const name = document.getElementById('userName').value.trim();
+            const nameError = document.getElementById('nameError');
+            if (name === '' || name.length < 2) {
+                nameError.style.display = 'block';
+                isValid = false;
+            } else {
+                nameError.style.display = 'none';
+            }
+
+            const age = document.getElementById('userAge').value;
+            const ageError = document.getElementById('ageError');
+            if (age === '' || age < 1 || age > 120) {
+                ageError.style.display = 'block';
+                isValid = false;
+            } else {
+                ageError.style.display = 'none';
+            }
+
+            const genderError = document.getElementById('genderError');
+            if (!selectedGender) {
+                genderError.style.display = 'block';
+                isValid = false;
+            } else {
+                genderError.style.display = 'none';
+            }
+            
+            return isValid;
+        }
+
+        function showWelcomeMessage() {
+            const name = document.getElementById('userName').value.trim();
+            const age = document.getElementById('userAge').value;
+            const color = document.getElementById('favoriteColor').value || 'Red';
+
+            document.getElementById('displayName').textContent = name;
+            document.getElementById('userInfo').textContent = 
+                `Age: ${age}, Gender: ${selectedGender.charAt(0).toUpperCase() + selectedGender.slice(1)}, Favorite Color: ${color.charAt(0).toUpperCase() + color.slice(1)}`;
+
+            const welcomeSilhouette = document.getElementById('welcomeSilhouette');
+            welcomeSilhouette.className = 'welcome-silhouette';
+            if (selectedGender === 'male') {
+                welcomeSilhouette.classList.add('male-silhouette');
+            } else {
+                welcomeSilhouette.classList.add('female-silhouette');
+            }
+
+            document.getElementById('welcomeSection').style.display = 'block';
+
+            document.getElementById('welcomeSection').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }
+
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (validateForm()) {
+                showWelcomeMessage();
+            }
+        });
+
+        document.getElementById('userName').addEventListener('input', function() {
+            if (this.value.trim().length >= 2) {
+                document.getElementById('nameError').style.display = 'none';
+            }
+        });
+
+        document.getElementById('userAge').addEventListener('input', function() {
+            const age = parseInt(this.value);
+            if (age >= 1 && age <= 120) {
+                document.getElementById('ageError').style.display = 'none';
+            }
+        });
+
+        document.getElementById('favoriteColor').value = '';
+    </script>
+</body>
+</html>
