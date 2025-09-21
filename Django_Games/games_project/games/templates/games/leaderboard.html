@@ -1,0 +1,129 @@
+{% extends 'games/base.html' %}
+{% load static %}
+{% load games_extras %}
+
+{% block title %}Leaderboard - Django Games Lab3{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4">
+    <h2>🏆 Global Leaderboard</h2>
+    <p>Compete with players from around the world!</p>
+</div>
+
+<!-- Filters -->
+<div class="stats-container mb-4">
+    <form method="get" class="row" style="align-items: end; gap: 20px;">
+        <div class="form-group" style="flex: 1; min-width: 200px;">
+            <label for="game">Filter by Game:</label>
+            <select name="game" id="game" onchange="this.form.submit()" style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ddd;">
+                <option value="">All Games</option>
+                {% for game in games %}
+                    <option value="{{ game.id }}" {% if game.id|slugify == current_game %}selected{% endif %}>
+                        {{ game.icon }} {{ game.display_name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group" style="flex: 1; min-width: 150px;">
+            <label for="period">Time Period:</label>
+            <select name="period" id="period" onchange="this.form.submit()" style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ddd;">
+                <option value="all_time" {% if current_period == 'all_time' %}selected{% endif %}>All Time</option>
+                <option value="today" {% if current_period == 'today' %}selected{% endif %}>Today</option>
+                <option value="week" {% if current_period == 'week' %}selected{% endif %}>This Week</option>
+                <option value="month" {% if current_period == 'month' %}selected{% endif %}>This Month</option>
+            </select>
+        </div>
+    </form>
+</div>
+
+<!-- Leaderboard Results -->
+<div class="stats-container">
+    <div class="score-list">
+        {% for score in scores %}
+            <div class="score-item {% if forloop.counter <= 3 %}top-rank{% endif %}">
+                <div class="player-info">
+                    <div class="rank-badge" style="
+                        background: {% if forloop.counter == 1 %}#ffd700{% elif forloop.counter == 2 %}#c0c0c0{% elif forloop.counter == 3 %}#cd7f32{% else %}#667eea{% endif %};
+                        color: white;
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-weight: bold;
+                        margin-right: 15px;
+                    ">
+                        {% if forloop.counter <= 3 %}
+                            {% if forloop.counter == 1 %}🥇
+                            {% elif forloop.counter == 2 %}🥈
+                            {% else %}🥉{% endif %}
+                        {% else %}
+                            {{ forloop.counter }}
+                        {% endif %}
+                    </div>
+                    <div>
+                        <strong>{{ score.player.name }}</strong>
+                        {% if score.player.avatar %}
+                            <span style="margin-left: 5px;">{{ score.player.avatar }}</span>
+                        {% endif %}
+                        <br>
+                        <small style="color: #6c757d;">
+                            {{ score.game.display_name }} • 
+                            {{ score.created_at|timesince }} ago
+                            {% if score.attempts > 1 %}
+                                • {{ score.attempts }} attempt{{ score.attempts|pluralize }}
+                            {% endif %}
+                            {% if score.duration %}
+                                • {{ score.duration.total_seconds|divide:60|floatformat:1 }}min
+                            {% endif %}
+                        </small>
+                    </div>
+                </div>
+                <div style="text-align: right;">
+                    {% score_badge score.score score.max_possible_score %}
+                    <div style="margin-top: 5px; font-size: 0.9em; color: #666;">
+                        {{ score.score_percentage|floatformat:1 }}%
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="alert alert-info">
+                No scores found for the selected criteria.
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Pagination -->
+{% if is_paginated %}
+<div class="text-center mt-4">
+    <div class="pagination-wrapper" style="display: inline-flex; gap: 10px; align-items: center;">
+        {% if page_obj.has_previous %}
+            <a href="?page=1{% if current_game %}&game={{ current_game }}{% endif %}{% if current_period != 'all_time' %}&period={{ current_period }}{% endif %}" class="btn btn-secondary">First</a>
+            <a href="?page={{ page_obj.previous_page_number }}{% if current_game %}&game={{ current_game }}{% endif %}{% if current_period != 'all_time' %}&period={{ current_period }}{% endif %}" class="btn btn-secondary">Previous</a>
+        {% endif %}
+        
+        <span style="padding: 10px;">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+        
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if current_game %}&game={{ current_game }}{% endif %}{% if current_period != 'all_time' %}&period={{ current_period }}{% endif %}" class="btn btn-secondary">Next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}{% if current_game %}&game={{ current_game }}{% endif %}{% if current_period != 'all_time' %}&period={{ current_period }}{% endif %}" class="btn btn-secondary">Last</a>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+<style>
+.top-rank {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 255, 255, 0.8));
+    border-left: 4px solid #ffd700;
+}
+
+.pagination-wrapper a {
+    text-decoration: none;
+}
+</style>
+{% endblock %}

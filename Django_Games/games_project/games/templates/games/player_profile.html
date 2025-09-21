@@ -1,0 +1,231 @@
+{% extends 'games/base.html' %}
+{% load static %}
+{% load games_extras %}
+
+{% block title %}{{ player.name }} - Player Profile{% endblock %}
+
+{% block extra_css %}
+<style>
+.profile-header {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 30px;
+    border-radius: 20px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.level-bar {
+    background: rgba(255, 255, 255, 0.3);
+    height: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+    overflow: hidden;
+}
+
+.level-progress {
+    background: #ffd700;
+    height: 100%;
+    transition: width 0.5s ease;
+}
+
+.achievement-badge {
+    display: inline-block;
+    background: linear-gradient(45deg, #ffd700, #ffed4e);
+    color: #333;
+    padding: 8px 12px;
+    border-radius: 20px;
+    margin: 5px;
+    font-size: 0.9em;
+    box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+}
+
+.performance-chart {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.game-stat-card {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Player Profile Header -->
+<div class="profile-header">
+    <div style="display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap;">
+        <div class="player-avatar" style="width: 80px; height: 80px; font-size: 2.5em; background: rgba(255,255,255,0.2);">
+            {{ player.avatar }}
+        </div>
+        <div style="text-align: left;">
+            <h2>{{ player.name }}</h2>
+            <p>Level {{ player.level }} Player</p>
+            <p>Rank #{{ rank_info.current_rank }} of {{ rank_info.total_players }}</p>
+            {% if player.last_played %}
+                <small>Last played {{ player.last_played|timesince }} ago</small>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Level Progress Bar -->
+    <div style="margin-top: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span>Level {{ player.level }}</span>
+            <span>{{ player.experience_to_next_level }} XP to next level</span>
+            <span>Level {{ player.level|add:1 }}</span>
+        </div>
+        <div class="level-bar">
+            <div class="level-progress" style="width: {{ player.total_score|remainder:500|percentage:500 }}%"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Overview -->
+<div class="stats-container">
+    <h3>📊 Player Statistics</h3>
+    <div class="stats-grid">
+        <div class="stat-item">
+            <span class="stat-value">{{ stats.games_played|default:0 }}</span>
+            <span class="stat-label">Games Played</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-value">{{ stats.total_score|default:0 }}</span>
+            <span class="stat-label">Total Score</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-value">{{ stats.best_score|default:0 }}</span>
+            <span class="stat-label">Best Score</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-value">{{ stats.average_score|default:0|floatformat:1 }}</span>
+            <span class="stat-label">Average Score</span>
+        </div>
+        {% if stats.total_playtime %}
+        <div class="stat-item">
+            <span class="stat-value">{{ stats.total_playtime.total_seconds|divide:3600|floatformat:1 }}h</span>
+            <span class="stat-label">Total Playtime</span>
+        </div>
+        {% endif %}
+        {% if stats.favorite_game %}
+        <div class="stat-item">
+            <span class="stat-value">{{ stats.favorite_game }}</span>
+            <span class="stat-label">Favorite Game</span>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Game-wise Performance -->
+<div class="stats-container">
+    <h3>🎮 Game Performance</h3>
+    {% for game_stat in game_stats %}
+        <div class="game-stat-card">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="font-size: 2em;">{{ game_stat.game__icon }}</div>
+                <div>
+                    <strong>{{ game_stat.game__display_name }}</strong><br>
+                    <small>{{ game_stat.games_played }} game{{ game_stat.games_played|pluralize }} played</small><br>
+                    <small>Last played: {{ game_stat.last_played|timesince }} ago</small>
+                </div>
+            </div>
+            <div style="text-align: right;">
+                <div class="score-badge">Best: {{ game_stat.best_score }}</div>
+                <div style="font-size: 0.9em; margin-top: 5px;">
+                    Avg: {{ game_stat.avg_score|floatformat:1 }}<br>
+                    Total: {{ game_stat.total_score }}
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="alert alert-info">
+            No games played yet. Start playing to see your performance!
+        </div>
+    {% endfor %}
+</div>
+
+<!-- Player Achievements -->
+{% if achievements %}
+<div class="stats-container">
+    <h3>🏆 Achievements</h3>
+    <div style="text-align: center;">
+        {% for achievement in achievements %}
+            <div class="achievement-badge {% if achievement.is_completed %}excellent{% else %}average{% endif %}">
+                {{ achievement.achievement.icon }} {{ achievement.achievement.name }}
+                {% if not achievement.is_completed %}
+                    <br><small>{{ achievement.progress }}/{{ achievement.achievement.required_value }}</small>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<!-- Recent Games -->
+<div class="stats-container">
+    <h3>📈 Recent Activity</h3>
+    <div class="score-list">
+        {% for score in recent_scores|slice:":15" %}
+            <div class="score-item">
+                <div class="player-info">
+                    <div class="player-avatar" style="background: {{ score.game.background_color }};">
+                        {{ score.game.icon }}
+                    </div>
+                    <div>
+                        <strong>{{ score.game.display_name }}</strong><br>
+                        <small style="color: #6c757d;">
+                            {{ score.created_at|date:"M d, Y H:i" }}
+                            {% if score.duration %}
+                                • {{ score.duration.total_seconds|divide:60|floatformat:0 }}min
+                            {% endif %}
+                            {% if score.is_personal_best %}
+                                <span style="color: gold;">👑 Personal Best!</span>
+                            {% endif %}
+                        </small>
+                    </div>
+                </div>
+                <div style="text-align: right;">
+                    {% score_badge score.score score.max_possible_score %}
+                    {% if score.attempts > 1 %}
+                        <br><small>{{ score.attempts }} attempt{{ score.attempts|pluralize }}</small>
+                    {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <div class="alert alert-info">
+                No recent activity. Start playing some games!
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Performance Trends Chart -->
+{% if daily_performance %}
+<div class="performance-chart">
+    <h3>📊 Performance Trends (Last 30 Days)</h3>
+    <div id="performanceChart" style="height: 300px;">
+        <!-- Chart would be rendered here with Chart.js or similar -->
+        <div style="text-align: center; padding: 50px; color: #666;">
+            📈 Performance chart data available for {{ daily_performance|length }} days
+        </div>
+    </div>
+</div>
+
+<script>
+// Sample data for performance chart
+const performanceData = {{ daily_performance|safe }};
+console.log('Performance data:', performanceData);
+// Chart implementation would go here
+</script>
+{% endif %}
+{% endblock %}

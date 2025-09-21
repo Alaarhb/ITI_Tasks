@@ -1,0 +1,76 @@
+{% load static %}
+{% load games_extras %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Django Games Lab2{% endblock %}</title>
+    
+    <!-- External CSS Files -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/games.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="container">
+        <!-- Header with DTL Variables -->
+        <div class="header fade-in-up">
+            <h1>{{ "🎮 Django Games Lab2"|safe }}</h1>
+            <p class="subtitle">
+                <!-- DTL Filter: Current time formatting -->
+                Welcome! Today is {{ current_time|date:"l, F d, Y" }}
+            </p>
+            
+            <!-- Navigation with DTL Tags -->
+            <nav class="nav-links">
+                <a href="{% url 'home' %}" {% if request.resolver_match.url_name == 'home' %}class="active"{% endif %}>
+                    🏠 Home
+                </a>
+                <a href="{% url 'number_guess' %}" {% if request.resolver_match.url_name == 'number_guess' %}class="active"{% endif %}>
+                    🔢 Number Guess
+                </a>
+                <a href="{% url 'tic_tac_toe' %}" {% if request.resolver_match.url_name == 'tic_tac_toe' %}class="active"{% endif %}>
+                    ❌ Tic Tac Toe
+                </a>
+                <a href="{% url 'rock_paper_scissors' %}" {% if request.resolver_match.url_name == 'rock_paper_scissors' %}class="active"{% endif %}>
+                    ✂️ Rock Paper Scissors
+                </a>
+            </nav>
+        </div>
+        
+        <!-- Messages using DTL Variables -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} fade-in-up">
+                    {{ message|safe }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        <!-- Main Content -->
+        <main class="game-container fade-in-up">
+            {% block content %}{% endblock %}
+        </main>
+        
+        <!-- Footer with DTL Variables -->
+        <footer class="text-center mt-4" style="color: white; opacity: 0.8;">
+            <p>
+                <!-- DTL Filters: String manipulation -->
+                {{ "Made with Django Template Language (DTL)"|upper }} 
+                | {{ current_time|date:"Y" }}
+                <!-- DTL Variables: Dynamic content -->
+                {% if total_players %}
+                | {{ total_players }} Player{{ total_players|pluralize }}
+                {% endif %}
+            </p>
+        </footer>
+    </div>
+    
+    <!-- External JavaScript -->
+    <script src="{% static 'js/games.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

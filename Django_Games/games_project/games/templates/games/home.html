@@ -1,0 +1,271 @@
+{% extends 'games/base.html' %}
+{% load static %}
+{% load games_extras %}
+
+{% block title %}Home - Django Games Lab3{% endblock %}
+
+{% block extra_css %}
+<style>
+.analytics-card {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.stat-item {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.trending-indicator {
+    display: inline-block;
+    background: #ff6b6b;
+    color: white;
+    font-size: 0.8em;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 5px;
+}
+
+.category-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <!-- Dynamic Welcome Message using DTL -->
+    <h2>
+        Welcome to Django Games Lab3! 
+        {% if user.is_authenticated %}
+            Hello, {{ user.first_name|default:user.username }}!
+        {% endif %}
+        🎯
+    </h2>
+    
+    <!-- Real-time Statistics Dashboard -->
+    <div class="analytics-card">
+        <h3>📊 Live Gaming Statistics</h3>
+        <div class="stat-grid">
+            <div class="stat-item">
+                <div class="stat-value">{{ stats.total_players|default:0 }}</div>
+                <div class="stat-label">Total Players</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">{{ stats.total_games|default:0 }}</div>
+                <div class="stat-label">Available Games</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">{{ stats.games_played_today|default:0 }}</div>
+                <div class="stat-label">Games Today</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">{{ stats.active_players_week|default:0 }}</div>
+                <div class="stat-label">Active This Week</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Featured Games with Enhanced Statistics -->
+    <h3>⭐ Featured Games</h3>
+    <div class="games-grid">
+        {% for game in featured_games %}
+            <div class="game-card category-card" 
+                 style="background: linear-gradient(45deg, {{ game.background_color }}, {{ game.category.color }});"
+                 onclick="location.href='{% url game.name %}'">
+                
+                <!-- Game Icon and Trending Indicator -->
+                <span class="game-icon">{{ game.icon }}</span>
+                {% if game.total_plays > 100 %}
+                    <span class="trending-indicator">🔥 Hot</span>
+                {% endif %}
+                
+                <h3>{{ game.display_name }}</h3>
+                <p>{{ game.description }}</p>
+                
+                <!-- Advanced Statistics Display -->
+                <div style="background: rgba(255, 255, 255, 0.2); padding: 10px; border-radius: 8px; margin: 10px 0;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.9em;">
+                        <div>
+                            <strong>{{ game.total_plays|default:0 }}</strong><br>
+                            <small>Total Plays</small>
+                        </div>
+                        <div>
+                            <strong>{{ game.average_rating|default:0|floatformat:1 }}%</strong><br>
+                            <small>Avg Score</small>
+                        </div>
+                        <div>
+                            <strong>{{ game.unique_players|default:0 }}</strong><br>
+                            <small>Players</small>
+                        </div>
+                        <div>
+                            <strong>{{ game.difficulty_level|difficulty_stars }}</strong><br>
+                            <small>Difficulty</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="{% url game.name %}" class="btn">
+                    Play Now
+                </a>
+            </div>
+        {% empty %}
+            <div class="alert alert-info">
+                No featured games available at the moment.
+            </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Trending Games Section -->
+    {% if trending_games %}
+    <div class="stats-container mt-4">
+        <h3>📈 Trending Games</h3>
+        <div class="score-list">
+            {% for game in trending_games %}
+                <div class="score-item">
+                    <div class="player-info">
+                        <div class="player-avatar" style="background: {{ game.background_color }};">
+                            {{ game.icon }}
+                        </div>
+                        <div>
+                            <strong>{{ game.display_name }}</strong><br>
+                            <small style="color: #6c757d;">
+                                Category: {{ game.category.name }}
+                            </small>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div class="score-badge">
+                            {{ game.recent_plays }} plays
+                        </div>
+                        <small>{{ game.recent_players }} players</small>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Game Categories with Statistics -->
+    <div class="stats-container mt-4">
+        <h3>🎮 Game Categories</h3>
+        <div class="games-grid">
+            {% for category in categories %}
+                <div class="category-card" style="background: {{ category.color }}; padding: 20px; border-radius: 15px; color: white;">
+                    <span style="font-size: 2em;">{{ category.icon }}</span>
+                    <h4>{{ category.name }}</h4>
+                    <p>{{ category.description|default:"Explore amazing games in this category" }}</p>
+                    
+                    <!-- Category Statistics -->
+                    <div style="background: rgba(255, 255, 255, 0.2); padding: 10px; border-radius: 8px; margin-top: 10px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.9em;">
+                            <div>
+                                <strong>{{ category.game_count }}</strong><br>
+                                <small>Games</small>
+                            </div>
+                            <div>
+                                <strong>{{ category.total_plays|default:0 }}</strong><br>
+                                <small>Total Plays</small>
+                            </div>
+                        </div>
+                        {% if category.avg_score %}
+                        <div style="margin-top: 8px;">
+                            <small>Average Score: {{ category.avg_score|floatformat:1 }}</small>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- Top Players Leaderboard -->
+    {% if top_players %}
+    <div class="stats-container mt-4">
+        <h3>👑 Top Players</h3>
+        <div class="score-list">
+            {% for player in top_players %}
+                <div class="score-item">
+                    <div class="player-info">
+                        <div class="player-avatar">
+                            {{ player.name|first|upper }}
+                        </div>
+                        <div>
+                            <strong>{{ player.name }}</strong>
+                            <span style="color: gold;">{{ player.avatar }}</span><br>
+                            <small style="color: #6c757d;">
+                                Level {{ player.level }} • 
+                                {{ player.total_games }} game{{ player.total_games|pluralize }}
+                                {% if player.recent_games > 0 %}
+                                    • {{ player.recent_games }} recent
+                                {% endif %}
+                            </small>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div class="score-badge excellent">
+                            {{ player.total_score|floatformat:0 }} pts
+                        </div>
+                        <small>Rank #{{ forloop.counter }}</small>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-3">
+            <a href="{% url 'leaderboard' %}" class="btn">View Full Leaderboard</a>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Recent High Scores -->
+    {% if recent_scores %}
+    <div class="stats-container mt-4">
+        <h3>🏆 Recent High Scores</h3>
+        <div class="score-list">
+            {% for score in recent_scores|slice:":10" %}
+                <div class="score-item">
+                    <div class="player-info">
+                        <div class="player-avatar">
+                            {{ score.player.name|first|upper }}
+                        </div>
+                        <div>
+                            <strong>{{ score.player.name }}</strong><br>
+                            <small style="color: #6c757d;">
+                                {{ score.game.display_name }} • 
+                                {{ score.created_at|timesince }} ago
+                                {% if score.is_personal_best %}
+                                    <span style="color: gold;">👑 PB</span>
+                                {% endif %}
+                            </small>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        {% score_badge score.score score.game.max_score %}
+                        {% if score.attempts > 1 %}
+                            <br><small>{{ score.attempts }} attempt{{ score.attempts|pluralize }}</small>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

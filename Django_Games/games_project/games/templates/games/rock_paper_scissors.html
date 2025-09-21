@@ -1,0 +1,174 @@
+{% extends 'games/base.html' %}
+{% load static %}
+{% load games_extras %}
+
+{% block title %}{{ game.get_name_display }} - Django Games Lab2{% endblock %}
+
+{% block content %}
+<div class="rps-container">
+    <!-- DTL Variables: Game information -->
+    <h2>{{ game.icon }} {{ game.get_name_display }}</h2>
+    <p style="margin: 20px 0; font-size: 18px; color: #666;">
+        {{ game.description }}
+    </p>
+    
+    <!-- DTL Conditional: Battle results display -->
+    {% if result %}
+    <div class="battle-result fade-in-up">
+        <h3>🥊 Battle Results</h3>
+        <div class="battle-display">
+            <div class="player-choice">
+                <h4>{{ player.name|default:"You" }}</h4>
+                <!-- DTL Variables: Choice display -->
+                <div class="choice-display">{{ choice_emoji }}</div>
+                <p>{{ player_choice|title }}</p>
+            </div>
+            
+            <div class="vs-text">VS</div>
+            
+            <div class="computer-choice">
+                <h4>Computer</h4>
+                <div class="choice-display">{{ computer_emoji }}</div>
+                <p>{{ computer_choice|title }}</p>
+            </div>
+        </div>
+        
+        <!-- DTL Variables: Result message with custom filter -->
+        <div class="result-message {{ result }}">
+            {{ result_message }}
+            {% if score > 0 %}
+                <br><small>+{{ score }} points earned!</small>
+            {% endif %}
+        </div>
+        
+        <!-- DTL Variables: Session statistics -->
+        <div class="stats-container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-value">{{ games_played }}</span>
+                    <span class="stat-label">Games Played</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">{{ wins }}</span>
+                    <span class="stat-label">Wins</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">{{ ties|default:0 }}</span>
+                    <span class="stat-label">Ties</span>
+                </div>
+                <div class="stat-item">
+                    <!-- DTL Filter: Percentage calculation -->
+                    <span class="stat-value">{{ win_rate }}%</span>
+                    <span class="stat-label">Win Rate</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Game Form -->
+    <form method="post" class="fade-in-up">
+        {% csrf_token %}
+        
+        <!-- DTL Conditional: Player name input -->
+        {% if not result %}
+        <div class="form-group" style="max-width: 300px; margin: 0 auto 30px;">
+            <label for="player_name">Your Name:</label>
+            <input type="text" id="player_name" name="player_name" placeholder="Enter your name" required>
+        </div>
+        {% else %}
+        <input type="hidden" name="player_name" value="{{ player.name }}">
+        {% endif %}
+        
+        <!-- Choice Buttons -->
+        <div class="choice-buttons">
+            <button type="submit" name="choice" value="rock" class="choice-btn rock">
+                <span class="emoji">🪨</span>
+                Rock
+            </button>
+            
+            <button type="submit" name="choice" value="paper" class="choice-btn paper">
+                <span class="emoji">📄</span>
+                Paper
+            </button>
+            
+            <button type="submit" name="choice" value="scissors" class="choice-btn scissors">
+                <span class="emoji">✂️</span>
+                Scissors
+            </button>
+        </div>
+    </form>
+    
+    <!-- DTL Conditional: Reset button -->
+    {% if session_stats.games_played > 0 %}
+    <div class="text-center mt-3">
+        <a href="{% url 'reset_rps_stats' %}" class="btn btn-secondary">🔄 Reset Stats</a>
+    </div>
+    {% endif %}
+    
+    <!-- Overall Statistics using DTL Variables -->
+    {% if game_stats and game_stats.total_games > 0 %}
+    <div class="stats-container mt-4">
+        <h4>📊 Overall Game Statistics</h4>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <span class="stat-value">{{ game_stats.total_games }}</span>
+                <span class="stat-label">Total Games</span>
+            </div>
+            <div class="stat-item">
+                <!-- DTL Filter: Percentage with custom filter -->
+                <span class="stat-value">{{ game_stats.total_wins|percentage:game_stats.total_games }}%</span>
+                <span class="stat-label">Player Win Rate</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">{{ game_stats.total_ties|default:0 }}</span>
+                <span class="stat-label">Total Ties</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">{{ game_stats.avg_score|floatformat:1 }}</span>
+                <span class="stat-label">Average Score</span>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Recent Players using DTL For Loop -->
+    {% if player_scores %}
+    <div class="stats-container">
+        <h4>👥 Recent Players</h4>
+        <div class="score-list">
+            {% for score in player_scores %}
+                <div class="score-item">
+                    <div class="player-info">
+                        <div class="player-avatar">
+                            {{ score.player.name|first|upper }}
+                        </div>
+                        <div>
+                            <strong>{{ score.player.name }}</strong><br>
+                            <!-- DTL Filter: Time since -->
+                            <small>{{ score.created_at|timesince }} ago</small>
+                        </div>
+                    </div>
+                    <!-- DTL Variables: Score display -->
+                    <div class="score-badge">
+                        {{ score.score }} pts
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Game Instructions -->
+    <div class="game-instructions">
+        <h4>🎮 Game Rules:</h4>
+        <ul>
+            <li><strong>🪨 Rock</strong> crushes ✂️ Scissors</li>
+            <li><strong>📄 Paper</strong> covers 🪨 Rock</li>
+            <li><strong>✂️ Scissors</strong> cuts 📄 Paper</li>
+            <!-- DTL Variables: Dynamic scoring -->
+            <li>Win = {{ "10"|add:"0" }} points, Tie = 5 points, Loss = 0 points</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
